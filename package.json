@@ -1,0 +1,24 @@
+{
+  "name": "pmanager-desktop",
+  "version": "1.0.0",
+  "description": "pmanager-desktop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/momantai/pmanager-desktop.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/momantai/pmanager-desktop/issues"
+  },
+  "homepage": "https://github.com/momantai/pmanager-desktop#readme",
+  "devDependencies": {
+    "electron": "^2.0.8"
+  }
+}
