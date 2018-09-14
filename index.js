@@ -6,10 +6,10 @@ let win
 
 function createWindow() {
     win = new BrowserWindow({
-        width: 350,
-        height: 380,
-        resizable: false,
-        frame: false
+        minHeight: 600,
+        minWidth: 800,
+        resizable: true,
+        frame: true
     })
 
     win.setMenuBarVisibility(false)

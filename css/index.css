@@ -6,104 +6,38 @@
     -webkit-box-sizing: border-box;
     font-size: 14px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-    background-color: rgb(255, 255, 255);
-}
-
-a {
-    text-decoration: none;
-    color: #606060;
-}
-
-a:hover {
-    text-decoration-line: underline;
-}
-
-li {
     list-style: none;
-    display: inline;
+    text-decoration: none;
 }
 
-.separe {
-    margin: 0 5px;
-    height: 18px;
-    border: 1px solid #ccc;
+#lateral-left {
+    width: 250px;
+    height: 100vh;
+    position: relative;
+    left: -200px;
+    background-color: crimson; /*rgb(89, 0, 172);*/
+    box-shadow: 1px 0px 10px 1px rgb(121, 121, 121);
+    transition: 0.2s;
 }
-
-#connect-option {
-    background-color: #FAFAFA;
-    width: 100%;
-    height: 49px;
-    position: flex;
-    color: #606060;
-    box-shadow: inset 0 -3px 6px rgba(0, 0, 0, 0.25)
+#lateral-left:hover {
+    left: 0;
 }
-
-    #connect-option span a, #connect-option ul {
-        display: inline-flex;
-        margin-left: 22px;
-        margin-top: 14px;
-    }
-
-    #connect-option ul {
-        float: right;
-        margin-right: 13px;
-    }
-
-#content-info-projects {
-    width: 100%;
-    height: 250px;
-    position: absolute;
-    bottom: 0;
-}
-    #box-all-projects {
-        width: 302px;
-        height: 189px;
+    #menu-l-left {
+        width: 200px;
+        margin: 40px 0 0 25px;
         position: absolute;
-        left: 24px;
-        bottom: 17px;
-        background-color: #F4F6F8;
-        color: #A3A4B9;
-        font-weight: lighter;
-        border-radius: 3px;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.25);
-        overflow-y: auto;
+        display: block;
+        color: white;
+    }
+    ul li {
+        margin: 10px;
+        padding: 5xp;
+        font-weight: bolder;
+        font-family: Ubuntu, sans-serif;
     }
 
-    .scroll::-webkit-scrollbar {
-        width: 5px;
-        background-color: rgb(25, 48, 255);
+    ul li:hover {
+        font-weight: bold;
+        color: rgb(228, 228, 228);
+        cursor: pointer;
     }
-    .scroll::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 6px rgb(255, 255, 255);
-        background-color: #F5F5F5;
-    }
-    .scroll::-webkit-scrollbar-thumb {
-        -webkit-box-shadow: inset 0 0 100px #919AFF;
-        background-color: #fff;
-    }
-        #option-new-project {
-            display: flex;
-            margin-left: 44px;
-            margin-top: 15px;
-        }
-
-        .project-in-box {
-            width: 100%;
-            height: 31.5px;
-            display: flex;
-            align-items: center;
-            border-bottom:1px solid #E8E8E8;
-            border-top: 1px solid rgb(232, 232, 232);
-        }
-            .project-in-box p {
-                margin: 15px;
-            }
-        .project-in-box:not(last-child) {
-            border-top: none;
-        }
-        .project-in-box:hover {
-            background: rgb(255, 255, 245);
-        }
