@@ -1,0 +1,233 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans');
+@import url('https://fonts.googleapis.com/css?family=Hind');
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    font-family: 'Open Sans', serif;
+}
+
+/************* Elementos *************************/
+input {
+    height: 37px;
+    border: 1px solid rgba(61, 70, 79, 0.589);
+    border-radius: 5px;
+    padding-left: 8px;
+}
+input:focus {
+    box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
+}
+
+/************* Ventana modal de nuevo Item ***********/
+
+.title {
+    font-weight: bolder;
+    color: #2f4f4f;
+}
+
+.modal, .backg-modal {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.backg-modal {
+    background-color: rgba(0, 0, 0, 0.918);
+}
+
+.hidden  {
+    display: none;
+}
+    .boxModal {
+        width: 317px;
+        height: 167px;
+        background-color: white;
+        border-radius: 5px;
+        position: fixed;
+        z-index: 100;
+    }
+        .titleModal {
+            width: 100%;
+            height: 27px;
+            display: flex;
+            align-items: center;
+            padding-left: 15px;
+            border-bottom: 0.5px solid #ccc;
+        }
+        .contentModal {
+            height: 140px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+/***************************/
+
+.barra {
+    position: absolute;
+    z-index: 100;
+    height: 100vh;
+    width: 250px;
+    top: 0;
+    left: -200px;
+    box-shadow: 0 0 0 3px rgba(61,70,79,.05),0 1px 4px 0px rgba(61,70,79,.45);
+    background-color: crimson;
+    transition: left 0.3s;
+}
+.barra:hover {
+    left: 0;
+}
+
+.tboard {
+    width: 1020px;
+    margin: 60px auto 0 auto;
+}
+
+body {
+    background-color: #f4f6f9;
+}
+.c-todo-b, .h-todo-b {
+    width: 1000px;
+    height: 480px;
+    display: flex;
+}
+
+/* Cabecera de secciones de vistas de los items*/
+.h-todo-b {
+    height: 60px;
+}
+    .v-todo-b, .s-h-todo {
+        background: #e9eaeb;
+        min-height: 15px;
+        margin: 0 5px;
+        box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
+        border-radius: 5px;
+        flex: 1;    
+        flex-direction: column;
+        overflow: auto;
+    }
+    .v-todo-b:first-child, .s-h-todo:first-child {
+        margin-left: 10px;
+    }
+    .v-todo-b:last-child, .s-h-todo:last-child {
+        margin-right: 10px;
+    }
+        .s-h-todo {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            padding: 0 15px;
+            height: 50px;
+            align-content: center;
+		background-color: white;
+        }
+        .title-head-board, .more-head-board {
+            flex-grow: 1;
+            display: flex;
+            align-content: center;
+        }
+        .more-head-board {
+            justify-content: end;
+        }
+            .more-head-board button {
+                border: none;
+                border-radius: 50px;
+            }
+            
+/************** Item (tarea) dentro de las secciones del taskboard ********/
+        .i-todo-b {
+            min-height: 40px;
+            margin: 10px 13px 0 12px;
+            box-shadow: 0 0 1px white;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 0.8em;
+            color: dimgray;
+            background-color: white;
+            box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
+        }
+            .t-i-t-b {
+                margin: 6px 10px;
+                font-weight: bolder;
+            }
+/*********** Barra de área de progreso dentro del Item, NOTA: aun sin terminar ****/
+            .progress {
+                box-shadow: 0 0 1px lightgrey, 0px 0px 3px #ccc;
+                height: 30px;
+                padding: 5px;
+                display: flex;
+                margin: 3px 10px;
+                justify-content: center;
+                align-content: center;
+                flex-wrap: wrap;
+            }
+                .p {
+                    font-size: 10px;
+                    flex: 1;
+                    color: white;
+                    background-color: #0A84FF;
+                    height: 13px;
+                }
+                .bar {
+                    height: 13px;
+                    width: 50px;
+                    background-color: antiquewhite;
+                }
+/*********** Botones de acción en el item **********************/
+            .action-i-t-b {
+                margin: 3px 5px;
+                display: flex;
+            }
+                .btn-icons {
+                    margin-top: 5px;
+                    height: 30px;
+                    border-top: 0.5px solid lightgray;
+                    flex: 1;
+                    display: flex;
+                    justify-content: center;
+                    align-content: center;
+                    flex-wrap: wrap;
+                }
+                    .icon {
+                        width: 20px;
+                        height: 20px;
+                        cursor: pointer;
+                        background-color: #5489BF; /*#2f4f4f;*/
+                        border-radius: 50px;
+                        background-size: 60%;
+                        background-position: center center;
+                        background-repeat: no-repeat;
+                    }
+                    .more {
+                        background-color: transparent;
+                        background-size: 100%;
+                    }
+                    .icon:hover {
+                        opacity: 0.8;
+                    }
+                        .play {
+                            background-image: url('./img/play.svg');
+                        }
+                        .comment {
+                            background-image: url('./img/comment.svg');
+                        }
+                        .pause {
+                            background-image: url('./img/pause.svg');
+                        }
+                        .left {
+                            background-image: url('./img/back.svg');
+                        }
+                        .right {
+                            background-image: url('./img/next.svg');
+                        }
+                        .more {
+                            background-image: url('./img/more.svg');
+                        }
