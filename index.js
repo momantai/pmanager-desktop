@@ -9,7 +9,8 @@ function createWindow() {
         minHeight: 600,
         minWidth: 800,
         resizable: true,
-        frame: true
+        frame: true,
+        icon: path.join(__dirname, 'icon/P.png')
     })
 
     win.setMenuBarVisibility(false)

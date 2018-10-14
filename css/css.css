@@ -8,24 +8,7 @@
     font-family: 'Open Sans', serif;
 }
 
-.i-todo-b {
-    position: relative;
-    z-index: 0;
-}
 
-
-
-.deletew::after {
-    position: absolute;
-    top: 2px;
-    right: 10px;
-    content: "\274c"; /* use the hex value here... */
-    font-size: 15px;
-    color: #5489BF;
-    line-height: 15px;
-    text-align: center;
-    cursor: pointer;
-}
 
 /* MAIN*/
 
@@ -254,6 +237,33 @@ body {
                 margin: 6px 10px;
                 font-weight: bolder;
             }
+
+/*********** Boton delete Item ********************/
+
+            .i-todo-b:hover .deletew {
+                display: block;
+                position: relative;
+                z-index: 0;
+            }
+            .deletew {
+                display: none;
+            }
+
+                .deletew:hover {
+                    display: block;
+                }
+                .deletew::after {
+                    position: absolute;
+                    top: 2px;
+                    right: 10px;
+                    content: "\274c"; /* use the hex value here... */
+                    font-size: 15px;
+                    color: #5489BF;
+                    line-height: 15px;
+                    text-align: center;
+                    cursor: pointer;
+                }
+
 /*********** Barra de área de progreso dentro del Item, NOTA: aun sin terminar ****/
             .progress {
                 box-shadow: 0 0 1px lightgrey, 0px 0px 3px #ccc;
