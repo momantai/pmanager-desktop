@@ -7,13 +7,10 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="css/css.css" type="text/css">
 
-    <title>Board To-do</title>
+    <title>Pmanager</title>
 </head>
 
 <body>
-    <script>
-         document.title = 'Taskboard | Nuevo Proyecto'
-    </script>
     <!--
         todo-board: Contenedor del taskboard en su totalidad.
         c-todo-b: Container todo board, contenedor de las secciones y los items dentro de estas.
@@ -35,40 +32,79 @@
                     <div class="backg-modal" @click="oculteEl('Modal', 'hidden')"></div>
                     <div class="boxModal">
                         <div class="titleModal">
-                            <p class="title">Nuevo Item {{status}}</p>
+                            <p class="title">Nuevo Item {{statustem}}</p>
                         </div>
                         <div class="contentModal">
-                            <input id="inputNItem" type="text" @keyup.13="newItem({m: ''}), oculteEl('Modal', 'hidden')"
-                                @keyup.esc="titleItem='', oculteEl('Modal', 'hidden')" v-model="titleItem">
+                            <input id="inputNItem" class="inItem" type="text" @keyup.13="newTask({m: ''}), oculteEl('Modal', 'hidden')"
+                                @keyup.esc="titleItem='', oculteEl('Modal', 'hidden')" v-model="titleItem" placeholder="Ej. Realizar tarea.">
+                            <input type="text" id="inputTags" class="inItem" @keyup.13="newTask({m: ''})" @keyup.esc="tagsItem='', oculteEl('Modal', 'hidden')"
+                                v-model="tagsItem" placeholder="# Ej. TagUno, TagDos">
                         </div>
                     </div>
                 </div>
-        
-        
+
+                <div id="modal_task" class="modal">
+                    <div class="backg-modal"></div>
+                    <div class="boxModal">
+                            <div class="titleModal">
+                                <p class="title">Editando información una tarea</p>
+                            </div>
+                        <div id="data_task">
+                            <ol>
+                                <li>
+                                    <div class="info_task">
+                                        <div v-show="options.titleEdit == false">
+                                            <span title="Doble click para editar." @dblclick="options.titleEdit = true">JavaScript</span>
+                                        </div>
+                                        <input type="text" v-if="options.titleEdit">
+                                    </div>
+                                </li>
+                                <li>
+                                    asadq
+                                </li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div id="todo-board">
                     <div class="h-todo-b">
                         <div class="s-h-todo" v-for="i in status">
                             <div class="title-head-board title">{{i}}</div>
                             <div class="more-head-board">
-                                <button class="icon more" id="moreItemid" @click="newItemE(i)"></button>
+                                <button class="icon more" id="moreItemid" @click="newItemE(i)" title="Tarea nueva"></button>
                             </div>
                         </div>
                     </div>
-        
+
                     <div class="c-todo-b">
                         <div class="v-todo-b" v-for="i in taskboard">
                             <div class="i-todo-b" v-for="s in i">
-                                <span class="deletew" title="Eliminar" @click="deleteTask(s._id)"></span>
-                                <p class="t-i-t-b">{{s.work}}</p>
+
+
+                                <span class="deletew" title="Eliminar" @click="deleteTask({i: s._id, m: ''})"></span>
+                                <div class="titletask">
+                                    <p class="t-i-t-b">{{s.work}}</p>
+                                </div>
+
+                                <div class="tags">
+                                    <p v-for="t in s.tag"><span @click="filterTag({t})">#{{t}}&nbsp;</span></p>
+                                    
+                                </div>
+
                                 <div class="progress" v-if="s.progress">
                                     <div class="p">{{s.progress}}</div>
                                     <div class="bar"></div>
                                 </div>
+
+
                                 <div class="action-i-t-b">
-                                    <div class="btn-icons" v-if="indexPos(s.status) != 0"><i class="icon left" @click="change({i:s._id, s:s.status, t:'b', m:''})"></i></div>
+                                    <div class="btn-icons" v-if="indexPosition(s.status) != 0" title="Retroceder"><i
+                                            class="icon left ico-bg" @click="changeStatus({i:s._id, s:s.status, t:'b', m:''})"></i></div>
                                     <div class="btn-icons" v-if="s.comment"><i class="icon comment"></i>{{s._id}}</div>
-                                    <div class="btn-icons" v-if="indexPos(s.status) != status.length-1"><i class="icon right"
-                                            @click="change({i:s._id, s:s.status, t:'n', m:''})"></i></div>
+                                    <div class="btn-icons" v-if="indexPosition(s.status) != status.length-1" title="Avanzar"><i
+                                            class="icon right ico-bg" @click="changeStatus({i:s._id, s:s.status, t:'n', m:''})"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -76,10 +112,10 @@
                 </div>
             </div>
         </div>
-        <div class="section-two sections">
+        <!-- <div class="section-two sections">
             <div class="calendar widgets"></div>
             <div class="log widgets"></div>
-        </div>
+        </div> -->
 
     </div>
     <!-- <script src="vue.js"></script>

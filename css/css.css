@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import url('https://fonts.googleapis.com/css?family=Hind');
+@import url('./taskboard.css');
+@import url('./modaltask.css');
 * {
     margin: 0;
     padding: 0;
@@ -8,6 +10,9 @@
     font-family: 'Open Sans', serif;
 }
 
+body {
+    background-color: #f4f6f9;
+}
 
 
 /* MAIN*/
@@ -73,7 +78,7 @@ input:focus {
 }
 
 .backg-modal {
-    background-color: rgba(0, 0, 0, 0.918);
+    /*background-color: rgba(0, 0, 0, 0.918);*/
 }
 
 .hidden  {
@@ -86,6 +91,7 @@ input:focus {
         border-radius: 5px;
         position: fixed;
         z-index: 100;
+        box-shadow: 0 0 50px 10px rgba(61,70,79,.3),0 1px 3px 0 rgba(61,70,79,.3);
     }
         .titleModal {
             width: 100%;
@@ -119,222 +125,3 @@ input:focus {
     left: 0;
 }
 
-/******************* box task board *********************/
-.tboard {
-    width: 800px;
-    height: 500px;
-    flex: 1;
-    overflow-x: hidden;
-    padding: 5px;
-}
-
-.tboard:hover{
-    overflow-x: auto;
-}
-.tboard::-webkit-scrollbar {
-    height: 10px;
-    position: absolute;
-    /* float: right; */
-    opacity: 0;
-}
-.tboard::-webkit-scrollbar-track {
-    background: #ddd;
-}
-.tboard::-webkit-scrollbar-thumb {
-    background: #a0bcd4; 
-}
-
-
-/*********************************************************/
-body {
-    background-color: #f4f6f9;
-}
-.c-todo-b, .h-todo-b {
-    width: 1000px;
-    max-height: 400px;
-    display: flex;
-}
-
-/* Cabecera de secciones de vistas de los items*/
-.h-todo-b {
-    height: 60px;
-}
-    .v-todo-b, .s-h-todo {
-        background: #e9eaeb;
-        min-height: 15px;
-        margin: 0 5px;
-        box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
-        border-radius: 5px;
-        flex: 1;    
-        flex-direction: column;
-        overflow-y: hidden;
-        padding-bottom: 10px;
-    }
-
-    /********** SCROLL Visual todo board ****************/
-    .v-todo-b:hover{
-        overflow-y: auto;
-    }
-    .v-todo-b::-webkit-scrollbar {
-        width: 10px;
-        position: absolute;
-        right: 0;
-        float: right;
-        opacity: 0;
-    }
-    .v-todo-b::-webkit-scrollbar-track {
-        background: #ddd;
-    }
-    .v-todo-b::-webkit-scrollbar-thumb {
-        background: #a0bcd4; 
-    }
-    /****************************************************/
-
-    .v-todo-b:first-child, .s-h-todo:first-child {
-        margin-left: 10px;
-    }
-    .v-todo-b:last-child, .s-h-todo:last-child {
-        margin-right: 10px;
-    }
-        .s-h-todo {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            padding: 0 15px;
-            height: 50px;
-            align-content: center;
-            align-items: center;
-		    background-color: white;
-        }
-        .title-head-board, .more-head-board {
-            flex-grow: 1;
-            display: flex;
-            align-content: center;
-        }
-        .more-head-board {
-            justify-content: flex-end;
-        }
-            .more-head-board button {
-                border: none;
-                border-radius: 50px;
-            }
-            
-/************** Item (tarea) dentro de las secciones del taskboard ********/
-        .i-todo-b {
-            min-height: 40px;
-            margin: 10px 13px 0 12px;
-            box-shadow: 0 0 1px white;
-            border-radius: 4px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            font-size: 0.8em;
-            color: dimgray;
-            background-color: white;
-            box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
-        }
-            .t-i-t-b {
-                margin: 6px 10px;
-                font-weight: bolder;
-            }
-
-/*********** Boton delete Item ********************/
-
-            .i-todo-b:hover .deletew {
-                display: block;
-                position: relative;
-                z-index: 0;
-            }
-            .deletew {
-                display: none;
-            }
-
-                .deletew:hover {
-                    display: block;
-                }
-                .deletew::after {
-                    position: absolute;
-                    top: 2px;
-                    right: 10px;
-                    content: "\274c"; /* use the hex value here... */
-                    font-size: 15px;
-                    color: #5489BF;
-                    line-height: 15px;
-                    text-align: center;
-                    cursor: pointer;
-                }
-
-/*********** Barra de área de progreso dentro del Item, NOTA: aun sin terminar ****/
-            .progress {
-                box-shadow: 0 0 1px lightgrey, 0px 0px 3px #ccc;
-                height: 30px;
-                padding: 5px;
-                display: flex;
-                margin: 3px 10px;
-                justify-content: center;
-                align-content: center;
-                flex-wrap: wrap;
-            }
-                .p {
-                    font-size: 10px;
-                    flex: 1;
-                    color: white;
-                    background-color: #0A84FF;
-                    height: 13px;
-                }
-                .bar {
-                    height: 13px;
-                    width: 50px;
-                    background-color: antiquewhite;
-                }
-/*********** Botones de acción en el item **********************/
-            .action-i-t-b {
-                margin: 3px 5px;
-                display: flex;
-            }
-                .btn-icons {
-                    margin-top: 5px;
-                    height: 30px;
-                    border-top: 0.5px solid lightgray;
-                    flex: 1;
-                    display: flex;
-                    justify-content: center;
-                    align-content: center;
-                    align-items: center;
-                    flex-wrap: wrap;
-                }
-                    .icon {
-                        width: 20px;
-                        height: 20px;
-                        cursor: pointer;
-                        background-color: #5489BF; /*#2f4f4f;*/
-                        border-radius: 50px;
-                        background-size: 60%;
-                        background-position: center center;
-                        background-repeat: no-repeat;
-                    }
-                    .more {
-                        background-color: transparent;
-                        background-size: 100%;
-                    }
-                    .icon:hover {
-                        opacity: 0.8;
-                    }
-                        .play {
-                            background-image: url('./img/play.svg');
-                        }
-                        .comment {
-                            background-image: url('./img/comment.svg');
-                        }
-                        .pause {
-                            background-image: url('./img/pause.svg');
-                        }
-                        .left {
-                            background-image: url('./img/back.svg');
-                        }
-                        .right {
-                            background-image: url('./img/next.svg');
-                        }
-                        .more {
-                            background-image: url('./img/more.svg');
-                        }
