@@ -1,5 +1,5 @@
-let url = 'https://pmanagerd.mybluemix.net'
-//let url = 'http://0.0.0.0:5000/'
+//let url = 'https://pmanagerd.mybluemix.net'
+let url = 'http://0.0.0.0:5000'
 const uuid = require('uuid')
 const Vue = require('vue/dist/vue')
 const socket = require('socket.io-client')(url + '/view')
@@ -34,7 +34,7 @@ let tb = new Vue({
     el: '.tboard',
     data: {
         titulo: 'Hola.',
-        status: ['backlog', 'progress', 'review', 'stop'],
+        status: ['Backlog', 'Progress', 'Review', 'Stop'],
         task: [],
         temptask: [],
         titleItem: "",
@@ -89,7 +89,6 @@ let tb = new Vue({
         newTask: function (nTask) { /* Función para crear nueva tarea. */
             if (nTask.m == '' && this.titleItem != '') {
                 axios.post(urltask, qstring.stringify({
-                    '_id': uuid.v4(),
                     'work': this.titleItem,
                     'status': this.statustem,
                     'typeAction': 'create',
@@ -105,6 +104,7 @@ let tb = new Vue({
                         _id: nTask._id,
                         status: nTask.status,
                         work: nTask.work,
+                        tag: nTask.tag
                     });
                 }
             }

@@ -6,10 +6,47 @@
 }
 
 #data_task {
-    width: 540px;
+    width: 600px;
     margin: 0 auto;
 }
 
 .info_task input{
-    
+    font-size: 16px;
+    border: none;
+    outline-style: none;
+    padding: 10px;
+    border: 0.5px solid whitesmoke;
+}
+
+span {
+    border: none;
+}
+
+#data_task li {
+    padding: 15px 15px;
+}
+
+#data_task li:nth-child(1) {
+    border-bottom: 1px solid lightgray;
+}
+
+#data_task ol {
+    width: 100%;
+    height: 360px;
+    padding: 0 20px;
+    overflow-y: auto;
+}
+
+#data_task ol::-webkit-scrollbar {
+    width: 10px;
+    position: absolute;
+    right: 0;
+    float: right;
+    opacity: 0;
+}
+#data_task ol::-webkit-scrollbar-track {
+    background: #ddd;
+}
+#data_task ol::-webkit-scrollbar-thumb {
+    background: #a0bcd4; 
 }
