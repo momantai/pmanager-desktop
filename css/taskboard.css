@@ -1,14 +1,14 @@
 
-
 /******************* box task board *********************/
 .tboard {
-    width: 800px;
-    height: 500px;
+    min-width: 800px;
+    height: 480px;
     flex: 1;
     overflow-x: hidden;
     padding: 5px;
 }
 
+/**************** Scrollbar task board *******************/
     .tboard:hover{
         overflow-x: auto;
     }
@@ -28,21 +28,27 @@
 
 /*********************************************************/
 
-.c-todo-b, .h-todo-b {
+.container-taskboard, .head-taskboard {
     width: 966px;
-    max-height: 400px;
+    height: 360px;
     display: flex;
 }
 
-/* Cabecera de secciones de vistas de los items*/
-.h-todo-b {
+/****** Cabecera de secciones de vistas de los items *****/
+.head-taskboard {
     height: 60px;
 }
-    .v-todo-b, .s-h-todo {
-        background: #e9eaeb;
+    .title-head-tb {
+        box-shadow: 0 0 0 1px darkgrey;
+    }
+    .task-table, .title-head-tb {
+        /* background-color: white; */
+        /* background: #e9eaeb; */
         min-height: 15px;
         margin: 0 5px;
-        box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
+        /* box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15); */
+        /* box-shadow: 0 0 0 1px floralwhite;
+        box-shadow: 0 1px 3px 0 #d4d4d5,0 0 0 1px #d4d4d5; */
         border-radius: 5px;
         flex: 1;    
         flex-direction: column;
@@ -50,32 +56,32 @@
         padding-bottom: 10px;
     }
 
-    /********** SCROLL Visual todo board ****************/
-    .v-todo-b:hover{
+/*************** SCROLL Visual todo board ****************/
+    .task-table:hover{
         overflow-y: auto;
     }
-    .v-todo-b::-webkit-scrollbar {
+    .task-table::-webkit-scrollbar {
         width: 10px;
         position: absolute;
         right: 0;
         float: right;
         opacity: 0;
     }
-    .v-todo-b::-webkit-scrollbar-track {
+    .task-table::-webkit-scrollbar-track {
         background: #ddd;
     }
-    .v-todo-b::-webkit-scrollbar-thumb {
+    .task-table::-webkit-scrollbar-thumb {
         background: #a0bcd4; 
     }
-    /****************************************************/
+/**********************************************************/
 
-    .v-todo-b:first-child, .s-h-todo:first-child {
+    .task-table:first-child, .title-head-tb:first-child {
         margin-left: 10px;
     }
-    .v-todo-b:last-child, .s-h-todo:last-child {
+    .task-table:last-child, .title-head-tb:last-child {
         margin-right: 10px;
     }
-        .s-h-todo {
+        .title-head-tb {
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
@@ -85,49 +91,48 @@
             align-items: center;
 		    background-color: white;
         }
-        .title-head-board, .more-head-board {
+        .title-head-board, .icon-more-area {
             flex-grow: 1;
             display: flex;
             align-content: center;
         }
-        .more-head-board {
+        .icon-more-area {
             justify-content: flex-end;
         }
-            .more-head-board button {
+            .icon-more-area button {
                 border: none;
                 border-radius: 50px;
             }
             
-/************** Item (tarea) dentro de las secciones del taskboard ********/
-        .i-todo-b {
+/**** Item (tarea) dentro de las secciones del taskboard ****/
+        .item-task {
             min-height: 40px;
             margin: 10px 9px 0 8px;
             box-shadow: 0 0 1px white;
-            border-radius: 2px;
+            border-radius: 0.27rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            font-size: 0.8em;
-            color: dimgray;
+            font-size: 0.85em;
+            color: rgba(0,0,0,.68);
             background-color: white;
+            /* box-shadow: 0 1px 3px 0 #d4d4d5,0 0 0 1px #d4d4d5; */
             box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
         }
-            .t-i-t-b {
+            .title-task {
                 margin: 6px 10px;
-                font-weight: bolder;
+                font-weight: lighter;
             }
 
-        .titleInput {
-            display: none;
-        }
-/*********** Boton delete Item ********************/
+        
+/******************** Boton delete Item *********************/
 
             .titletask {
                 display: inline-block;
                 width: 95%;
             }
 
-            .i-todo-b:hover .deletew {
+            .item-task:hover .deletew {
                 display: block;
                 position: relative;
                 z-index: 0;
@@ -154,7 +159,7 @@
                     color: #0A84FF;
                 }
 
-/*********** Barra de área de progreso dentro del Item, NOTA: aun sin terminar ****/
+/* Barra de área de progreso dentro del Item, NOTA: aun sin terminar */
             .progress {
                 box-shadow: 0 0 1px lightgrey, 0px 0px 3px #ccc;
                 height: 30px;
@@ -177,15 +182,15 @@
                     width: 50px;
                     background-color: antiquewhite;
                 }
-/*********** Botones de acción en el item **********************/
-            .action-i-t-b {
+/****************** Botones de acción en el item **********************/
+            .action-buttons {
                 margin: 2px 5px;
                 display: none;
             }
-            .i-todo-b:hover .action-i-t-b {
+            .item-task:hover .action-buttons {
                 display: flex;
             }
-                .btn-icons {
+                .button-icon {
                     margin-top: 5px;
                     height: 30px;
                     /*border-top: 0.5px solid lightgray;*/
@@ -214,7 +219,7 @@
                         opacity: 0.8;
                         
                     }
-                    .ico-bg:hover {
+                    .bg-icon:hover {
                         background-color: #0A84FF;
                     }
                         .play {
@@ -236,7 +241,7 @@
                             background-image: url('./img/more.svg');
                         }
 
-/* Tags, creo que esta será mi función favorita* */
+/************ Tags, creo que esta será mi función favorita ***********/
 
 .tags {
     margin: 0 5px 2px 5px;
@@ -250,10 +255,8 @@
 }
 
 .inItem {
-    width: 70px;
+    width: 270px;
     margin: 0 5px;
-}
-
-.inItem:focus {
-    width: 200px;
+    outline: 0;
+    border: 0;
 }

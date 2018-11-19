@@ -5,27 +5,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
     <link rel="stylesheet" href="css/css.css" type="text/css">
 
-    <title>Pmanager</title>
+    <title>Desarrollo de TaskBoard-Desktop</title>
 </head>
 
 <body>
     <!--
         todo-board: Contenedor del taskboard en su totalidad.
-        c-todo-b: Container todo board, contenedor de las secciones y los items dentro de estas.
-        h-todo-b: Head todo board, container de los elementos de la cabecera de las secciones.
-        s-h-todo: Seccion head todo, contenedor del titulo de las secciones y otros elementos.
-        v-todo-b: View todo board, vista contenedor que contiene y muestra los items.
-        i-todo-b: Item todo board, elemento (task) dentro del contenedor v-todo-b.
-        t-i-t-b:  Title Item To do board.
+        container-taskboard: Container todo board, contenedor de las secciones y los items dentro de estas.
+        head-taskboard: Head todo board, container de los elementos de la cabecera de las secciones.
+        title-head-tb: Seccion head todo, contenedor del titulo de las secciones y otros elementos.
+        task-table: View todo board, vista contenedor que contiene y muestra los items.
+        item-task: Item todo board, elemento (task) dentro del contenedor task-table.
+        title-task:  Title Item To do board.
         progress: Barra de proceso.
 
-        btn-icons: Sección de los iconos dentro de los items.
+        button-icon: Sección de los iconos dentro de los items.
         icon: icono.
     -->
     <div class="barra"></div>
     <div id="main">
+
+        <div id="tabinfo" class="" style="border: 0px solid #ccc;">
+            <div class="boxes">
+                <div>
+                    <h2 style="color: cadetblue">{{taskboard[0].length}}</h2>
+                    <p>Tareas por realizar</p>
+                </div>
+            </div>
+            <div class="boxes">
+                <div>
+                    <h2 style="color: orange">{{taskboard[1].length + taskboard[2].length}}</h2>
+                    <p>Tareas en progreso</p>
+                </div>
+            </div>
+            <div class="boxes">
+                <div>
+                    <h2 style="color: green">{{taskboard[3].length}}</h2>
+                    <p>Tareas terminadas</p>
+                </div>
+            </div>
+            <div class="boxes"></div>
+        </div>
+
         <div class="section-one sections">
             <div class="tboard">
                 <div id="Modal" class="modal hidden">
@@ -36,31 +60,54 @@
                         </div>
                         <div class="contentModal">
                             <input id="inputNItem" class="inItem" type="text" @keyup.13="newTask({m: ''}), oculteEl('Modal', 'hidden')"
-                                @keyup.esc="titleItem='', oculteEl('Modal', 'hidden')" v-model="titleItem" placeholder="Ej. Realizar tarea.">
-                            <input type="text" id="inputTags" class="inItem" @keyup.13="newTask({m: ''})" @keyup.esc="tagsItem='', oculteEl('Modal', 'hidden')"
-                                v-model="tagsItem" placeholder="# Ej. TagUno, TagDos">
+                                @keyup.esc="titleItem='', tagsItem = [], oculteEl('Modal', 'hidden')" v-model="titleItem" placeholder="Ej. Realizar tarea.">
+                            <!-- <input type="text" id="inputTags" class="inItem" @keyup.13="newTask({m: ''})" @keyup.esc="tagsItem='', oculteEl('Modal', 'hidden')"
+                                v-model="tagsItem" placeholder="# Ej. TagUno, TagDos"> -->
+                            <input-tag v-model="tagsItem" placeholder="# Tag"></input-tag>
                         </div>
                     </div>
                 </div>
 
-                <div id="modal_task" class="modal h">
-                    <div class="backg-modal"></div>
+                <div id="modal_task" class="modal hidden">
+                    <div class="backg-modal" @click="taskInformation"></div>
                     <div class="boxModal">
-                            <div class="titleModal">
-                                <p class="title">Editando información una tarea</p>
-                            </div>
+                        <div class="titleModal">
+                            <p class="title">Editando información de una tarea</p>
+                        </div>
                         <div id="data_task">
-                            <ol>
-                                <li>
+                            <ol id="sections-data">
+                                <li class="section-datat">
                                     <div class="info_task">
-                                        <div v-show="options.titleEdit == false">
-                                            <span title="Doble click para editar." @dblclick="options.titleEdit = true">JavaScript</span>
+                                        <div v-show="opt.titleEdit == false">
+                                            <span title="Doble click para editar." @dblclick="opt.titleEdit = true, opt.tempTitle = taskInfo.work">{{taskInfo.work}}</span>
                                         </div>
-                                        <input type="text" v-if="options.titleEdit" @keyup.13="options.titleEdit = false" value="JavaScript">
+                                        <input id="textTitle" type="text" v-if="opt.titleEdit" @keyup.13="changeTitle()"
+                                            @keyup.esc="opt.titleEdit = false, taskInfo.work = opt.tempTitle" v-model='taskInfo.work'>
                                     </div>
                                 </li>
-                                <li>
-                                    Hay muchas variaciones de los pasajes de Lorem Ipsum disponibles, pero la mayoría sufrió alteraciones en alguna manera, ya sea porque se le agregó humor, o palabras aleatorias que no parecen ni un poco creíbles. Si vas a utilizar un pasaje de Lorem Ipsum, necesitás estar seguro de que no hay nada avergonzante escondido en el medio del texto. Todos los generadores de Lorem Ipsum que se encuentran en Internet tienden a repetir trozos predefinidos cuando sea necesario, haciendo a este el único generador verdadero (válido) en la Internet. Usa un diccionario de mas de 200 palabras provenientes del latín, combinadas con estructuras muy útiles de sentencias, para generar texto de Lorem Ipsum que parezca razonable. Este Lorem Ipsum generado siempre estará libre de repeticiones, humor agregado o palabras no características del lenguaje, etc.
+                                <li class="section-datat">
+                                    <div class="description_task">
+                                        <div v-show="opt.descriptionEdit == false">
+                                            <a href="#" @click="opt.descriptionEdit = true, opt.tempInfo = taskInfo.description">Editar
+                                                descripción</a>
+                                            <p v-html="taskInfo.description"></p>
+                                        </div>
+                                        <template v-if="opt.descriptionEdit">
+                                            <a href="#" @click="changeDescription">Terminar edición</a> | <a href="#"
+                                                @click="opt.descriptionEdit = false, taskInfo.description = opt.tempInfo">Cancelar</a>
+                                            <div id="textDescription" @keyup.esc="changeDescription" contentEditable="true"
+                                                v-html="taskInfo.description"></div>
+                                        </template>
+                                        <div class="resources">
+                                            <input id="bfile" style="display:none" ref="bfiles" type="file" v-on:change="nfile">
+                                            <a href="#" @click="bfileset">Subir recurso</a>
+                                            <ol>
+                                                <li v-for="r in taskInfo.resources">
+                                                    <a :href="url+'/static/files/'+r._id" :download=r.name>{{r.name}}</a>
+                                                </li>
+                                            </ol>
+                                        </div>
+                                    </div>
                                 </li>
                             </ol>
                         </div>
@@ -69,28 +116,26 @@
 
 
                 <div id="todo-board">
-                    <div class="h-todo-b">
-                        <div class="s-h-todo" v-for="i in status">
-                            <div class="title-head-board title">{{i}}</div>
-                            <div class="more-head-board">
+                    <div class="head-taskboard">
+                        <div class="title-head-tb" v-for="i in status">
+                            <div class="title-head-board title">{{statusEsp[i]}}</div>
+                            <div class="icon-more-area">
                                 <button class="icon more" id="moreItemid" @click="newItemE(i)" title="Tarea nueva"></button>
                             </div>
                         </div>
                     </div>
 
-                    <div class="c-todo-b">
-                        <div class="v-todo-b" v-for="i in taskboard">
-                            <div class="i-todo-b" v-for="s in i">
-
+                    <div class="container-taskboard">
+                        <div class="task-table" v-for="i in taskboard">
+                            <div class="item-task" v-for="s in i">
 
                                 <span class="deletew" title="Eliminar" @click="deleteTask({i: s._id, m: ''})"></span>
-                                <div class="titletask">
-                                    <p class="t-i-t-b">{{s.work}}</p>
+                                <div class="titletask" @click="taskInformation(s._id)">
+                                    <p class="title-task">{{s.work}}</p>
                                 </div>
 
                                 <div class="tags">
                                     <p v-for="t in s.tag"><span @click="filterTag({t})">#{{t}}&nbsp;</span></p>
-                                    
                                 </div>
 
                                 <div class="progress" v-if="s.progress">
@@ -99,12 +144,12 @@
                                 </div>
 
 
-                                <div class="action-i-t-b">
-                                    <div class="btn-icons" v-if="indexPosition(s.status) != 0" title="Retroceder"><i
-                                            class="icon left ico-bg" @click="changeStatus({i:s._id, s:s.status, t:'b', m:''})"></i></div>
-                                    <div class="btn-icons" v-if="s.comment"><i class="icon comment"></i>{{s._id}}</div>
-                                    <div class="btn-icons" v-if="indexPosition(s.status) != status.length-1" title="Avanzar"><i
-                                            class="icon right ico-bg" @click="changeStatus({i:s._id, s:s.status, t:'n', m:''})"></i></div>
+                                <div class="action-buttons">
+                                    <div class="button-icon" v-if="indexPosition(s.status) != 0" title="Retroceder"><i
+                                            class="icon left bg-icon" @click="changeStatus({i:s._id, s:s.status, t:'b', m:''})"></i></div>
+                                    <div class="button-icon" v-if="s.comment"><i class="icon comment"></i>{{s._id}}</div>
+                                    <div class="button-icon" v-if="indexPosition(s.status) != status.length-1" title="Avanzar"><i
+                                            class="icon right bg-icon" @click="changeStatus({i:s._id, s:s.status, t:'n', m:''})"></i></div>
                                 </div>
                             </div>
                         </div>
@@ -112,11 +157,6 @@
                 </div>
             </div>
         </div>
-        <!-- <div class="section-two sections">
-            <div class="calendar widgets"></div>
-            <div class="log widgets"></div>
-        </div> -->
-
     </div>
     <!-- <script src="vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>

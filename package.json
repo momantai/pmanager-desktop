@@ -19,12 +19,18 @@
   },
   "homepage": "https://github.com/momantai/pmanager-desktop#readme",
   "devDependencies": {
-    "electron": "^2.0.8"
+    "electron": "^2.0.8",
+    "request": "^2.88.0"
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "form-data": "^2.3.3",
+    "formdata": "^0.10.4",
+    "node-fetch": "^2.3.0",
+    "request-promise": "^4.2.2",
     "socket.io-client": "^2.1.1",
     "uuid": "^3.3.2",
-    "vue": "^2.5.17"
+    "vue": "^2.5.17",
+    "vue-input-tag": "^2.0.1"
   }
 }

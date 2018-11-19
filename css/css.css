@@ -2,12 +2,13 @@
 @import url('https://fonts.googleapis.com/css?family=Hind');
 @import url('./taskboard.css');
 @import url('./modaltask.css');
+@import url('./tabinfo.css');
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     list-style: none;
-    font-family: 'Open Sans', serif;
+    font-family: 'Lato','Open Sans', serif;
 }
 
 body {
@@ -21,32 +22,31 @@ body {
     width:100vw;
     height: 100vh;
     display: flex;
+    flex-direction: column;
     padding: 0 0 0 50px;
     justify-content:center;
+    align-items: center;
 }
     .sections {
         display: flex;
         align-items: center;
         justify-items: center;
     }
-    .section-one {
-        flex-grow: 0.8;
-        /* border: 1px solid #2f4f4f; */
+    @media screen and (max-width: 1027px) {
+        .section-one {
+            flex-grow: 1;
+        }
+        .tboard {
+            width: 800px;
+        }
     }
-    .section-two {
-        flex-grow: 1;
-        width: 50px;
-        /* border: 1px solid #0A84FF; */
-        flex-direction: column;
-        justify-content: center;
-    }
-        .widgets {
+        /* .widgets {
             height: 280px;
             width: 280px;
             margin: 5px;
             background-color: white;
             box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
-        }
+        } */
 
 /************* Elementos *************************/
 input {
@@ -56,13 +56,38 @@ input {
     padding-left: 8px;
 }
 input:focus {
-    box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
+    /* box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15); */
+}
+
+#Modal .vue-input-tag-wrapper {
+    min-height: 15px;
+    border: 0;
+    width: 280px;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+#Modal .input-tag {
+    height: 2em;
+    background-color: #0A84FF;
+    color: white;
+    border: 0;
+    border-radius: 15px;
+}
+
+#Modal .new-tag {
+    min-width: 100px;
+    height: 2em;
+}
+
+#Modal .remove {
+    color: white;
 }
 
 /************* Ventana modal de nuevo Item ***********/
 
 .title {
-    font-weight: bolder;
+    font-weight: lighter;
     color: #2f4f4f;
 }
 
@@ -99,11 +124,12 @@ input:focus {
             display: flex;
             align-items: center;
             padding-left: 15px;
-            border-bottom: 0.5px solid #ccc;
+            border-bottom: 0.5px solid rgba(34,36,38,.15);
         }
         .contentModal {
             height: 140px;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
         }
@@ -117,11 +143,11 @@ input:focus {
     width: 250px;
     top: 0;
     left: -200px;
-    box-shadow: 0 0 0 3px rgba(61,70,79,.05),0 1px 4px 0px rgba(61,70,79,.45);
-    background-color: crimson;
+    background-color: rgb(61,70,79)/*crimson*/;
     transition: left 0.3s;
 }
 .barra:hover {
-    left: 0;
+    left: 0px;
+    box-shadow: 0 0 0 3px rgba(61,70,79,.05),0 1px 4px 0px rgba(61,70,79,.45);
 }
 

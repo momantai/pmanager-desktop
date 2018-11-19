@@ -1,10 +1,17 @@
 //let url = 'https://pmanagerd.mybluemix.net'
 let url = 'http://0.0.0.0:5000'
-const uuid = require('uuid')
 const Vue = require('vue/dist/vue')
 const socket = require('socket.io-client')(url + '/view')
 const axios = require('axios')
 qstring = require('querystring')
+
+const InputTag = require('vue-input-tag')
+
+
+fetch = require('node-fetch')
+
+const fdata = require('form-data')
+
 //const socket = io.connect('http://127.0.0.1:5000/view');
 
 let self = this;
@@ -14,38 +21,54 @@ socket.on('message', (msg)=> {
     console.log("Se ha recibido un mensaje.")
     console.log(msg)
     if(msg.typeAction == 'changeStatus'){
-        tb.changeStatus(msg);
+        tb.changeStatus(msg)
     } else if(msg.typeAction == 'deleteTask'){
         tb.deleteTask(msg)
-    } else if(msg.typeAction == 'taskEdit') {
+    } else if(msg.typeAction == 'title') {
         tb.taskEdit(msg)
     } else {
-        tb.newTask(msg);
+        tb.newTask(msg)
     }
 })
 
 
-
+Vue.component('task', {
+    templete:'<div class="titletask"></div>'
+})
 
 axios.get(urltask)
     .then(response => (tb.task = response.data.task))
 
+Vue.component('input-tag', InputTag.default)
+
 let tb = new Vue({
-    el: '.tboard',
+    el: '#main',
     data: {
         titulo: 'Hola.',
         status: ['Backlog', 'Progress', 'Review', 'Stop'],
+        statusEsp: { // Estados en idioma español.
+            'Backlog' : 'Almacen',
+            'Progress' : 'En progreso',
+            'Review' : 'En revisión',
+            'Stop' : 'Finalizado'
+        },
         task: [],
         temptask: [],
+        index: {},
         titleItem: "",
         statustem: "backlog",
-        tagsItem: '',
-        options: {
-            'titleEdit': false
-        }
+        tagsItem: [],
+        taskInfo: [],
+        opt: {
+            'titleEdit': false,
+            'descriptionEdit': false
+        },
+        file: '',
+        _idtofile: '',
+        url: url
     },
     computed: {
-        taskboard() {
+        taskboard() { // Crear listas de acuerdo a los status existentes de las tareas.
             let boards = []
             let temp = null
             if(this.temptask.length == 0){
@@ -63,10 +86,18 @@ let tb = new Vue({
             }
             
             delete temp
+            this.indexed
             return boards
+        },
+        indexed() {
+            index = {}
+            for(i = 0, j = this.task.length; i < j; i++){
+                index[this.task[i]._id] = i
+            }
+            this.index = index
         }
     },
-    methods: {
+    methods: { // indexPosition para saber el indice de un estado.
         indexPosition: function (v) {
             for (j = 0; j < this.status.length; j++) {
                 if (v == this.status[j]) {
@@ -74,7 +105,7 @@ let tb = new Vue({
                 }
             }
         },
-        filterTag: function(tag) {
+        filterTag: function(tag) { // Para filtrar por etiquetas.
             let temp = []
 
             for (var i = 0, l = this.task.length; i < l; i++) {
@@ -92,12 +123,13 @@ let tb = new Vue({
                     'work': this.titleItem,
                     'status': this.statustem,
                     'typeAction': 'create',
-                    'tags': this.tagsItem,
+                    'tags': String(this.tagsItem),
                     'm': 'mr'
                 }));
 
                 this.titleItem = "";
                 this.statustem = "";
+                this.tagsItem = [];
             } else {
                 if (nTask.work != "") {
                     this.task.push({
@@ -118,12 +150,7 @@ let tb = new Vue({
                     m: 'rm'
                 }))
             } else {
-                for (j = 0; j <= this.task.length; j++) {
-                    if (this.task[j]._id == tEdit._id) {
-                        this.task[j].work = tEdit.work
-                        break
-                    }
-                }
+                this.task[this.index[tEdit._id]].work = tEdit.work
             }
         },
         changeStatus: function (changeS) { /* F. para cambiar el estado de una tarea. */
@@ -136,13 +163,27 @@ let tb = new Vue({
                     m: 'rm'
                 }))
             } else {
-                for (j = 0; j <= this.task.length; j++) {
-                    if (this.task[j]._id == changeS._id) {
-                        this.task[j].status = changeS.status
-                        break
-                    }
-                }
+                this.task[this.index[changeS._id]].status = changeS.status
             }
+        },
+        changeTitle: function(){ // Cambiar titulo por uno nuevo.
+            d = document.getElementById('textTitle')
+            this.opt.titleEdit = false
+            axios.put(url+'/api/momantai/plam/t/'+this.taskInfo._id, qstring.stringify({
+                newTitle: this.taskInfo.work,
+                action: 'title'
+            }))
+
+            this.task[this.index[this.taskInfo._id]].work = this.taskInfo.work
+        },
+        changeDescription: function(){ // Agregar o actualizar descripción de una tarea.
+            d = document.getElementById('textDescription')
+            this.opt.descriptionEdit = false
+            this.taskInfo.description = d.innerHTML
+            axios.put(url+'/api/momantai/plam/t/'+this.taskInfo._id, qstring.stringify({
+                newDescription: this.taskInfo.description,
+                action: 'description'
+            }))
         },
         deleteTask: function (dTask) { /* Función para eliminar una tarea. */
             if (dTask.m == '') {
@@ -155,13 +196,7 @@ let tb = new Vue({
                         }
                     })
             } else {
-                // Falta arreglar esta parte, elimina todo en pantalla :'v
-                for (var j = 0; j < this.task.length; j++) {
-                    if (this.task[j]._id == dTask.id) {
-                        this.task.splice(j, 1)
-                        break
-                    }
-                }
+                this.task.splice(this.index[dTask.id], 1)
             }
         },
         oculteEl: function (idE, classE) {
@@ -169,14 +204,52 @@ let tb = new Vue({
                 document.getElementById("Modal").classList.remove("hidden");
                 document.getElementById("inputNItem").focus();
             } else {
+                this.$children[0]._data.innerTags = []
                 document.getElementById("Modal").classList.add("hidden");
             }
         },
         newItemE: function (statusN) {
             this.statustem = statusN;
-            this.oculteEl('Modal', 'hidden');
+            this.oculteEl('Modal', 'hidden')
+        },
+        taskInformation: function(_id) {
+            tI = document.getElementById('modal_task')
+            tI.classList.toggle('hidden')
+
+            this._idtofile = _id
+
+            if(_id != "") {
+                axios.get(url + '/api/momantai/plam/t/' + _id)
+                .then(response => (tb.taskInfo = response.data.task[0]))
+            }
+        },
+        nfile: function(event) { // Subir recurso a servidor.
+            console.log(event.target.files[0])
+            var form = new FormData()
+            form.append('file', event.target.files[0])
+            form.append('namefile', event.target.files[0].name)
+            axios.post(url + '/momantai/plam/upFile/'+ this._idtofile , form)
+                .then(res => {
+                    if(!this.taskInfo.hasOwnProperty('resources')){
+                        console.log('Entro!')
+                        this.taskInfo.resources = [{}]
+                    }
+                    console.log(res.data)
+                    this.taskInfo.resources.push(res.data)
+                })
+
+        },
+        bfileset: function() { // ByPass del input file.
+            this.$refs.bfiles.click()
+        },
+        notifi: function() {
+            console.log('click a barra')
+            let myNotifi = new Notification('Plam', {
+                body: 'Esta es una nueva, notificación.'
+            })
+            myNotifi.onclick = () => {
+                console.log('Dio un click')
+            }
         }
-
-
     }
 })

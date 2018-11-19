@@ -7,7 +7,7 @@ let win
 function createWindow() {
     win = new BrowserWindow({
         minHeight: 600,
-        minWidth: 800,
+        minWidth: 850,
         resizable: true,
         frame: true,
         icon: path.join(__dirname, 'icon/P.png')
