@@ -6,7 +6,7 @@ let win
 
 function createWindow() {
     win = new BrowserWindow({
-        minHeight: 600,
+        minHeight: 665,
         minWidth: 850,
         resizable: true,
         frame: true,

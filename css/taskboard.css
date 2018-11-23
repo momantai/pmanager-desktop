@@ -243,16 +243,34 @@
 
 /************ Tags, creo que esta será mi función favorita ***********/
 
-.tags {
-    margin: 0 5px 2px 5px;
+.tags, .tagback a{
+    margin: 5px 5px 8px 5px;
     color: #0A84FF;
     display: flex;
+    text-decoration: none;
 }
+
+.backtags {
+    display: flex;
+}
+
+.tagback {
+    width: 950px;
+    height: 23px;
+    margin: 5px;
+}
+
 .tags span:hover {
     color: #5489BF;
-    text-decoration: underline;
+    /* text-decoration: underline; */
     cursor: pointer;
 }
+    .tags span {
+        margin: 1px;
+        padding: 0 3px;
+        border: 1px solid;
+        border-radius: 1rem;
+    }
 
 .inItem {
     width: 270px;

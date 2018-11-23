@@ -59,13 +59,16 @@ let tb = new Vue({
         statustem: "backlog",
         tagsItem: [],
         taskInfo: [],
+        tagOpt: '',
         opt: {
             'titleEdit': false,
             'descriptionEdit': false
         },
         file: '',
         _idtofile: '',
-        url: url
+        url: url,
+        todos: [],
+        todo: ''
     },
     computed: {
         taskboard() { // Crear listas de acuerdo a los status existentes de las tareas.
@@ -107,7 +110,7 @@ let tb = new Vue({
         },
         filterTag: function(tag) { // Para filtrar por etiquetas.
             let temp = []
-
+            this.tagOpt = tag
             for (var i = 0, l = this.task.length; i < l; i++) {
                 if(this.task[i].hasOwnProperty('tag') && this.task[i].tag.includes(tag.t)){
                     temp.push(this.task[i])
@@ -249,6 +252,58 @@ let tb = new Vue({
             })
             myNotifi.onclick = () => {
                 console.log('Dio un click')
+            }
+        },
+        // Area de Todo (Checklist) CRUD
+        addTodo: function() {
+
+            axios.put(url+'/api/momantai/plam/t/'+this.taskInfo._id, qstring.stringify({
+                action: 'todo',
+                actodo: 'create',
+                todo: this.todo
+            })).then(res => {
+                this.taskInfo.todo.push(res.data)
+                console.log(res.data)
+            })
+
+            this.todo = ''
+
+
+        },
+        deleteTodo: function(id) {
+            this.taskInfo.todo.splice(id, 1)
+        },
+        editTodo: function(id) {
+            this.todo = this.taskInfo.todo[id].todo
+            this.deleteTodo(id)
+
+            axios.put(url+'/api/momantai/plam/t/'+this.taskInfo._id, qstring.stringify({
+                action: 'todo',
+                actodo: 'update',
+                todo: this.todo,
+                check: this.todo = this.taskInfo.todo[id].check
+            }))
+        },
+        checkTodo: function(id) {
+            if(this.taskInfo.todo[id].check == ''){
+                axios.put(url+'/api/momantai/plam/t/'+this.taskInfo._id, qstring.stringify({
+                    action: 'todo',
+                    actodo: 'update',
+                    _id: this.taskInfo.todo[id]._id,
+                    todo: this.taskInfo.todo[id].todo,
+                    check: 'check'
+                }))
+                console.log(this.taskInfo.todo[id]._id)
+                this.taskInfo.todo[id].check = 'check'
+            } else {
+                axios.put(url+'/api/momantai/plam/t/'+this.taskInfo._id, qstring.stringify({
+                    action: 'todo',
+                    actodo: 'update',
+                    '_id': this.taskInfo.todo[id]._id,
+                    'todo': this.taskInfo.todo[id].todo,
+                    'check': ''
+                }))
+                console.log(this.taskInfo.todo[id]._id)
             }
         }
     }
