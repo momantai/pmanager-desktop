@@ -74,7 +74,7 @@
                 </div>
 
                 <div id="modal_task" class="modal hidden">
-                    <div class="backg-modal" @click="taskInformation"></div>
+                    <div class="backg-modal" @click="taskInformation('')"></div>
                     <div class="boxModal">
                         <div class="titleModal">
                             <p class="title">Editando información de una tarea</p>
@@ -121,7 +121,13 @@
                                 <li>
                                     <div id="to-do">
                                         <span class="title-sections-dtask">To - do</span>
-                                        <input type="text" v-model="todo" @keyup.13="addTodo">
+                                        <template v-if="!todobolean">
+                                            <input type="text" v-model="todo" @keyup.13="addTodo">
+                                        </template>
+                                        <template v-else>
+                                            <input type="text" v-model="todo" @keyup.13="editTodo(todotempid)">
+                                            <a href="#" @click="todobolean = false, todo = ''">Cancelar</a>
+                                        </template>
                                         <ul id="checklist">
                                             <li v-for="(item, key) in taskInfo.todo" :key="key">
                                                 <div class="textcheck">

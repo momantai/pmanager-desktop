@@ -68,7 +68,9 @@ let tb = new Vue({
         _idtofile: '',
         url: url,
         todos: [],
-        todo: ''
+        todo: '',
+        todotempid: '',
+        todobolean: false
     },
     computed: {
         taskboard() { // Crear listas de acuerdo a los status existentes de las tareas.
@@ -215,7 +217,7 @@ let tb = new Vue({
             this.statustem = statusN;
             this.oculteEl('Modal', 'hidden')
         },
-        taskInformation: function(_id) {
+        taskInformation: function(_id="") {
             tI = document.getElementById('modal_task')
             tI.classList.toggle('hidden')
 
@@ -271,18 +273,34 @@ let tb = new Vue({
 
         },
         deleteTodo: function(id) {
+            axios.put(url+'/api/momantai/plam/t/'+this.taskInfo._id, qstring.stringify({
+                action: 'todo',
+                actodo: 'delete',
+                _id: this.taskInfo.todo[id]._id,
+            }))
             this.taskInfo.todo.splice(id, 1)
         },
         editTodo: function(id) {
-            this.todo = this.taskInfo.todo[id].todo
-            this.deleteTodo(id)
-
-            axios.put(url+'/api/momantai/plam/t/'+this.taskInfo._id, qstring.stringify({
-                action: 'todo',
-                actodo: 'update',
-                todo: this.todo,
-                check: this.todo = this.taskInfo.todo[id].check
-            }))
+            //this.todo = this.taskInfo.todo[id].todo
+            //this.deleteTodo(id)
+            if (this.todobolean) {
+                axios.put(url + '/api/momantai/plam/t/' + this.taskInfo._id, qstring.stringify({
+                    action: 'todo',
+                    actodo: 'update',
+                    _id: this.taskInfo.todo[this.todotempid]._id,
+                    todo: this.todo,
+                    check: this.taskInfo.todo[this.todotempid].check
+                }))
+                
+                this.todobolean = false
+                this.taskInfo.todo[this.todotempid].todo = this.todo
+                this.todo = ''
+                this.todotempid = ''
+            } else {
+                this.todobolean = true
+                this.todo = this.taskInfo.todo[id].todo
+                this.todotempid = id
+            }
         },
         checkTodo: function(id) {
             if(this.taskInfo.todo[id].check == ''){
