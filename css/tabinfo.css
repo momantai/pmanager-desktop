@@ -3,6 +3,12 @@
     width: 950px;
     height: 150px;
 }
+
+@media screen and (max-width: 1000px){
+    #tabinfo {
+        width: 800px;
+    }
+}
     .boxes {
         display: flex;
         justify-content: center;

@@ -1,32 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> 
-    <link rel="stylesheet" href="css/css.css" type="text/css">
-
-    <title>Desarrollo de TaskBoard-Desktop</title>
-</head>
-
-<body>
+<div id="vdos" data-vm="vdos">
     <!--
-        todo-board: Contenedor del taskboard en su totalidad.
-        container-taskboard: Container todo board, contenedor de las secciones y los items dentro de estas.
-        head-taskboard: Head todo board, container de los elementos de la cabecera de las secciones.
-        title-head-tb: Seccion head todo, contenedor del titulo de las secciones y otros elementos.
-        task-table: View todo board, vista contenedor que contiene y muestra los items.
-        item-task: Item todo board, elemento (task) dentro del contenedor task-table.
-        title-task:  Title Item To do board.
-        progress: Barra de proceso.
-
-        button-icon: Sección de los iconos dentro de los items.
-        icon: icono.
-    -->
-    <div class="barra"></div>
+            todo-board: Contenedor del taskboard en su totalidad.
+            container-taskboard: Container todo board, contenedor de las secciones y los items dentro de estas.
+            head-taskboard: Head todo board, container de los elementos de la cabecera de las secciones.
+            title-head-tb: Seccion head todo, contenedor del titulo de las secciones y otros elementos.
+            task-table: View todo board, vista contenedor que contiene y muestra los items.
+            item-task: Item todo board, elemento (task) dentro del contenedor task-table.
+            title-task:  Title Item To do board.
+            progress: Barra de proceso.
+    
+            button-icon: Sección de los iconos dentro de los items.
+            icon: icono.
+        -->
     <div id="main">
 
         <div id="tabinfo" class="" style="border: 0px solid #ccc;">
@@ -51,10 +36,11 @@
             <div class="boxes"></div>
         </div>
         <div class="tagback tags">
-                <div class="backtags" v-show="tagOpt">
-                    <a href="#" @click="temptask = [], tagOpt = ''">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sin filtros < </a> <span>{{tagOpt.t}}</span>
-                </div>
+            <div class="backtags" v-show="tagOpt">
+                <a @click="temptask = [], tagOpt = ''">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sin filtros < </a> <span>{{tagOpt.t}}</span>
+            </div>
         </div>
+
         <div class="section-one sections">
             <div class="tboard">
                 <div id="Modal" class="modal hidden">
@@ -65,9 +51,8 @@
                         </div>
                         <div class="contentModal">
                             <input id="inputNItem" class="inItem" type="text" @keyup.13="newTask({m: ''}), oculteEl('Modal', 'hidden')"
-                                @keyup.esc="titleItem='', tagsItem = [], oculteEl('Modal', 'hidden')" v-model="titleItem" placeholder="Ej. Realizar tarea.">
-                            <!-- <input type="text" id="inputTags" class="inItem" @keyup.13="newTask({m: ''})" @keyup.esc="tagsItem='', oculteEl('Modal', 'hidden')"
-                                v-model="tagsItem" placeholder="# Ej. TagUno, TagDos"> -->
+                                @keyup.esc="titleItem='', tagsItem = [], oculteEl('Modal', 'hidden')" v-model="titleItem"
+                                placeholder="Ej. Realizar tarea.">
                             <input-tag v-model="tagsItem" placeholder="# Tag"></input-tag>
                         </div>
                     </div>
@@ -94,12 +79,12 @@
                                     <div class="description_task">
                                         <div v-show="opt.descriptionEdit == false">
                                             <span class="title-sections-dtask">Descripción&nbsp;&nbsp;</span>
-                                            <a  href="#" @click="opt.descriptionEdit = true, opt.tempInfo = taskInfo.description">Editar</a>
+                                            <a @click="opt.descriptionEdit = true, opt.tempInfo = taskInfo.description">Editar</a>
                                             <div class="text-description" v-html="taskInfo.description"></div>
                                         </div>
                                         <template v-if="opt.descriptionEdit">
-                                                <span class="title-sections-dtask">Descripción&nbsp;&nbsp;</span>
-                                            <a href="#" @click="changeDescription">Terminar edición</a> | <a href="#"
+                                            <span class="title-sections-dtask">Descripción&nbsp;&nbsp;</span>
+                                            <a @click="changeDescription">Terminar edición</a> | <a
                                                 @click="opt.descriptionEdit = false, taskInfo.description = opt.tempInfo">Cancelar</a>
                                             <div id="textDescription" @keyup.esc="changeDescription" contentEditable="true"
                                                 v-html="taskInfo.description"></div>
@@ -113,7 +98,7 @@
                                                 </li>
                                             </ol>
                                             <div class="button-newresource" @click="bfileset">
-                                                <a href="#">+ Subir recurso</a>
+                                                <a>+ Subir recurso</a>
                                             </div>
                                         </div>
                                     </div>
@@ -126,7 +111,7 @@
                                         </template>
                                         <template v-else>
                                             <input type="text" v-model="todo" @keyup.13="editTodo(todotempid)">
-                                            <a href="#" @click="todobolean = false, todo = ''">Cancelar</a>
+                                            <a @click="todobolean = false, todo = ''">Cancelar</a>
                                         </template>
                                         <ul id="checklist">
                                             <li v-for="(item, key) in taskInfo.todo" :key="key">
@@ -135,8 +120,8 @@
                                                     <label :for="key" @click="checkTodo(key)">{{item.todo}}</label>
                                                 </div>
                                                 <div class="optcheck">
-                                                    <a href="#" @click="deleteTodo(key)">Borrar</a>
-                                                    <a href="#" @click="editTodo(key)">Editar</a>
+                                                    <a @click="deleteTodo(key)">Borrar</a>
+                                                    <a @click="editTodo(key)">Editar</a>
                                                 </div>
                                             </li>
                                         </ul>
@@ -146,9 +131,9 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div id="todo-board">
-                    
+
                     <div class="head-taskboard">
                         <div class="title-head-tb" v-for="i in status">
                             <div class="title-head-board title">{{statusEsp[i]}}</div>
@@ -192,10 +177,8 @@
         </div>
     </div>
     <!-- <script src="vue.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.7/uuid.min.js"></script>
-    <script src="uuid.min.js"></script> -->
-    <script src="js.js"></script>
-</body>
-
-</html>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/node-uuid/1.4.7/uuid.min.js"></script>
+        <script src="uuid.min.js"></script> -->
+    <!-- <script src="js.js"></script> -->
+</div>

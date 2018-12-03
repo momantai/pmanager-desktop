@@ -7,7 +7,7 @@ let win
 function createWindow() {
     win = new BrowserWindow({
         minHeight: 665,
-        minWidth: 850,
+        minWidth: 950,
         resizable: true,
         frame: true,
         icon: path.join(__dirname, 'icon/P.png')
@@ -16,7 +16,7 @@ function createWindow() {
     win.setMenuBarVisibility(false)
 
     win.loadURL(url.format({
-        pathname: path.join(__dirname, 'index.html'),
+        pathname: path.join(__dirname, 'init.html'),
         protocol: 'file',
         slashes: true
     }))

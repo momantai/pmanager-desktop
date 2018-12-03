@@ -1,5 +1,5 @@
-//let url = 'https://pmanagerd.mybluemix.net'
-let url = 'http://0.0.0.0:5000'
+let url = 'https://pmanagerd.mybluemix.net'
+//let url = 'http://0.0.0.0:5000'
 const Vue = require('vue/dist/vue')
 const socket = require('socket.io-client')(url + '/view')
 const axios = require('axios')
@@ -29,11 +29,6 @@ socket.on('message', (msg)=> {
     } else {
         tb.newTask(msg)
     }
-})
-
-
-Vue.component('task', {
-    templete:'<div class="titletask"></div>'
 })
 
 axios.get(urltask)

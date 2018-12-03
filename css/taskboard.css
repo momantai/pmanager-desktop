@@ -1,12 +1,14 @@
 
 /******************* box task board *********************/
 .tboard {
-    min-width: 800px;
+    min-width: 900px;
     height: 480px;
     flex: 1;
     overflow-x: hidden;
     padding: 5px;
 }
+
+
 
 /**************** Scrollbar task board *******************/
     .tboard:hover{
@@ -239,6 +241,13 @@
                         }
                         .more {
                             background-image: url('./img/more.svg');
+                        }
+                        .home {
+                            background-image: url('./img/home.svg');
+                            height: 40px;
+                            width: 40px;
+                            border-radius: 0;
+                            background-color: initial;
                         }
 
 /************ Tags, creo que esta será mi función favorita ***********/
