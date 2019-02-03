@@ -14,8 +14,8 @@ body {
 }
 	
 	#modalProject {
-		width: 500px;
-		height: 450px;
+		width: 450px;
+		height: 295px;
 	}
 		.data-project {
 			padding-top: 20px;
@@ -36,15 +36,25 @@ body {
 					border: 0;
 					border-radius: 0;
 					box-shadow: 0 1px 0 0px #ccc;
-					width: 300px;
+					width: 370px;
 					min-height: 25px;
 					padding: 10px;
-					font-size: 0.8em;
+					font-family: 'open sans';
+					font-size: 0.9em;
+					font-weight: lighter;
 					margin: 5px 0;
 					display: inline-block;
 				}
+
+				label.formp {
+					width: 298px;
+					background-color: #ebebeb;
+					color: #444;
+					box-shadow: none;
+				}
+
 				.formp:focus {
-					box-shadow: 0 2px 0 0px #c00;
+					box-shadow: 0 2px 0 0px rgb(61,70,79);
 				}
 					div.formp:empty::before {
 		  				color: grey;
@@ -95,18 +105,21 @@ body {
 }
 
 .showbox {
-	width: 1140px;
+	width: 95%;/*1140px;*/
 	margin: 0 auto;
-	margin-top: 50px; 
+	margin-top: 100px;
+	display: flex;
+	flex-wrap: wrap;
+	flex-direction: row;
 }
 
 	.proyect-preview {
 		display: inline-flex;
 		flex-direction: column;
-		width: 250px;
-		height: 230px;
+		width: 256px;
+		height: 117px;
 		box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
-		margin: 15px;
+		margin: 10px;
 		justify-content: center;
 		align-items: center;
 		position: relative;
@@ -121,8 +134,8 @@ body {
 		left: 0;
 		height: 50px;
 		width: 100%;
-		background-color: rgb(61,70,79);
-		box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
+		background-color: white;
+		box-shadow: 0 0 0 1px rgba(61,70,79,.05);
 		display: flex;
 		align-items: center;
 	}
@@ -134,12 +147,13 @@ body {
 		border: 0;
 		border-radius: 2rem;
 		padding: 0 10px;
-		height: 38px;
-		background-color: #dbdbdb;
+		height: 25px;
+		box-shadow: 0 0 0 1px rgba(61,70,79,.05);
+		//background-color: #eeeeee;
 	}
 	.search:focus {
 		background-color: white; 
-		box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15);
+		box-shadow: 0 0 0 1px rgba(0,123,255,0.6);
 	}
 
 	/* Items */
@@ -153,6 +167,21 @@ body {
 		align-items: center;
 		color: white;
 	}
+
+	#kproject .titleModal {
+		height: 35px;
+		background-color: #007bff;
+		border-radius: 3px 3px 0 0;
+		color: #FFF;
+	}
+	#kproject .title {
+		color: #fff;
+	}
+	#kproject .boxModal {
+		box-shadow: none;
+		box-shadow: 0 0 35px 0 rgba(0, 0, 0, 0.3);
+	}
+
 	.title-p {
 		/*border:1px solid;*/
 		margin-top: 15px;
@@ -178,7 +207,44 @@ body {
 		background-image:  url('./img/edit.svg');
 		cursor: pointer;
 	}
-	.count-task {
+		.bottom-p-preview {
+			width: 100%;
+			height: 45px;
+			display: flex;
+			flex-wrap: wrap;
+		}
+			.option-p-preview {
+				display: flex;
+				flex:auto;
+				justify-content:center;
+			}
+			.option-p-preview:hover {
+				text-decoration: underline;
+			}
+				.op-icon {
+					width: 15px;
+					height: 15px;
+					background-size: contain;
+					background-position: center;
+					background-repeat: no-repeat;
+					margin-right: 5px;
+				}
+					.task-icon {
+						background-image: url('img/todo.svg');
+					}
+					.members-icon {
+						background-image: url('img/users.svg');
+					}
+					.edit-icon {
+						background-image: url('img/edit.svg');
+					}
+				.op-option a {
+					color: #3D464F;
+					font-size: 0.75em;
+					text-decoration: none;
+				}
+
+	/* .count-task {
 		text-align: center;
 	}
 
@@ -196,7 +262,6 @@ body {
 		height: 25px;
 		text-align: center;
 		color: rgb(61,70,79);
-		/*box-shadow: 0 0 0 1px #ccc;*/
 	}
 
 	.count-task span {
@@ -207,10 +272,12 @@ body {
 	.count-task div span:hover {
 		box-shadow: 0 2px 0 0 #ccc;
 		cursor: pointer;
-	}
+	} */
 
 
 /* Crear un nuevo proyecto, ventana */
+
+
 
 #modalcProject {
 	width: 500px;
@@ -259,7 +326,7 @@ body {
 #createPjct {
 	width: 50px;
 	height: 50px;
-	background-color: #0052ff;
+	background-color: #007bff;
 	box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 1px rgba(61,70,79,.15);
 	border-radius: 50%;
 	position: absolute;
@@ -291,7 +358,7 @@ body {
 	.opt-form span {
 		padding: 7px 13px; 
 		color: white;
-		font-weight: bold;
+		font-weight: 100;
 		border-radius: 1rem;
 		cursor: pointer;
 	}
@@ -299,10 +366,17 @@ body {
 		box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 1px rgba(61, 70, 79, 0.3);
 	}
 
+	span.btn-create:hover {
+		border: 0;
+		background-color: #0052FF;
+		color: white !important;
+	}
+
 	.btn-create {
-		background-color: #00ff37;
+		border: 1px solid rgb(61,70,79);
 		margin-right: 13px;
+		color: rgb(61,70,79) !important;
 	}
 	.btn-cancel {
-		background-color: #dbdbdb;
+		background-color: rgb(61,70,79);
 	}

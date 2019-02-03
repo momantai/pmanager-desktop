@@ -19,7 +19,11 @@
   },
   "homepage": "https://github.com/momantai/pmanager-desktop#readme",
   "devDependencies": {
+    "browser-sync": "^2.26.3",
     "electron": "^2.0.8",
+    "gulp": "^4.0.0",
+    "gulp-pug": "^4.0.1",
+    "pug": "^2.0.3",
     "request": "^2.88.0"
   },
   "dependencies": {
@@ -29,8 +33,10 @@
     "node-fetch": "^2.3.0",
     "request-promise": "^4.2.2",
     "socket.io-client": "^2.1.1",
+    "sortablejs": "^1.8.1",
     "uuid": "^3.3.2",
     "vue": "^2.5.17",
-    "vue-input-tag": "^2.0.1"
+    "vue-input-tag": "^2.0.1",
+    "vuedraggable": "^2.17.0"
   }
 }

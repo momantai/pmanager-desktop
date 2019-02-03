@@ -1,0 +1,79 @@
+// Kindergarten project
+#kproject(data-vm="kproject") 
+    #pviews
+        #alertt.alert.displayhidden
+            .titlep ¡Título actualizado! Correctamente.
+        |
+        #modal-c-p.modal.hidden
+            .backg-modal(@click="modalCreate")
+            #modalcProject.boxModal
+                .titleModal
+                    p.title ¡Crear un nuevo proyecto!
+                .data-project
+                    .form
+                        input#NUEVOTITULO.formcp(type="text" placeholder="Nuevo título")
+                        div
+                            label momantai
+                            input.formcp(type="text"
+                                        v-model="idpm"
+                                        v-bind:value="clean"
+                                        placeholder="id-ejemplo-proyecto"
+                                        title="¡Haz que compartir tu proyecto sea más fácil!")
+                        .opt-form
+                            span.btn-create(@click="wCreate") Crear
+                            span.btn-cancel(@click="modalCreate") Cancelar
+        |
+        #modal-p.modal.hidden
+            .backg-modal(@click="modal")
+            #modalProject.boxModal
+                .titleModal
+                    p.title Editando información de proyecto
+                .data-project
+                    .form
+                        input#TITLE.formp(type="text"
+                                        @blur="updateTitle"
+                                        v-bind:value="datap.title"
+                                        placeholder="Título")
+                        #DESCRIPTION.formp(@blur="updateDescription"
+                                        data-placeholder="Descripción"
+                                        contenteditable="true") {{datap.description}}
+                        label.formp {{datap.proyect_id}}
+                        //- .collaborators
+                        //-     input#elcollabora.formp.collaborator(type="text"
+                        //-                     @keyUp.13="addCollaborator()"
+                        //-                     placeholder="Colaborador (usuario o e-mail)")
+                        //-     ul.collist
+                        //-         li(v-for="c in datap.collaborators")
+                        //-             span {{c}}
+                        //-             span(style="float:right; font-weight: 600; cursor: pointer;") x
+        |
+        #box-content
+            .show-proyects
+                .box-topshowproyect
+                    input.search(type="text"
+                                name="search"
+                                placeholder="Buscar..")
+                .showbox
+                    .proyect-preview(v-for="pv in dataps")
+                        .title-p
+                            a(:href="'https://www.pmanagerd.bluemix.net/'+pv.owner+'/'+pv.project_id")
+                            p(style="cursor: pointer"
+                                @click="enterProject(pv.owner, pv.proyect_id)") {{pv.title}}
+                        .bottom-p-preview
+                            .option-p-preview
+                                .op-icon.task-icon
+                                .op-option
+                                    a(@click="enterProject(pv.owner, pv.proyect_id)") {{pv.task.length}} Tareas
+                            .option-p-preview
+                                .op-icon.members-icon
+                                .op-option
+                                    a(href="#") 5 Miembros
+                            .option-p-preview
+                                .op-icon.edit-icon
+                                .op-option
+                                    a(@click="selectProject(pv.owner, pv.proyect_id)") Editar
+        |
+        #createPjct(title="Crear un proyecto"
+                    @click="modalCreate")
+            p +
+script(src="kproject.js")

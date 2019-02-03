@@ -2,14 +2,15 @@ module.exports = function () {
 	var self = this;
 
 	(function () {
-		let url = 'https://pmanagerd.mybluemix.net'
-		//let url = 'http://0.0.0.0:5000'
+		//let url = 'https://pmanagerd.mybluemix.net'
+		let url = 'http://0.0.0.0:5000'
 		const Vue = require('vue/dist/vue')
 		const socket = require('socket.io-client')(url + '/view')
 		const axios = require('axios')
 		qstring = require('querystring')
 
 		const InputTag = require('vue-input-tag')
+		const vuedrag = require('vuedraggable')
 
 
 		fetch = require('node-fetch')
@@ -19,7 +20,8 @@ module.exports = function () {
 		//const socket = io.connect('http://127.0.0.1:5000/view');
 
 		let self = this;
-		let urltask = url + '/api/momantai/plam/task'
+		//let urltask = url + '/api/momantai/plam/task'
+		let urltask = url + '/api/'+ownerG+'/'+projectG+'/task'
 
 		socket.on('message', (msg) => {
 			console.log("Se ha recibido un mensaje.")
@@ -39,6 +41,7 @@ module.exports = function () {
 			.then(response => (tb.task = response.data.task))
 
 		Vue.component('input-tag', InputTag.default)
+		Vue.component('draggable', vuedrag)
 
 		let tb = new Vue({
 			el: '#main',
@@ -69,7 +72,8 @@ module.exports = function () {
 				todos: [],
 				todo: '',
 				todotempid: '',
-				todobolean: false
+				todobolean: false,
+				elmove: ""
 			},
 			computed: {
 				taskboard() { // Crear listas de acuerdo a los status existentes de las tareas.
@@ -102,6 +106,18 @@ module.exports = function () {
 				}
 			},
 			methods: { // indexPosition para saber el indice de un estado.
+				onMove: function(evt, originalEvent) {
+					this.elmove = evt.draggedContext.element._id
+				},
+				onStart: function(evt){
+					console.log(evt.from.id)
+				},
+				End: function(evt){
+					console.log(evt.to.id)
+					console.log(this.onMove)
+					this.changeStatus({'m': 'rm', 'status': this.status[parseInt(evt.to.id)], '_id': this.elmove})
+					socket.emit('message', {m: 'rm', typeAction: 'changeStatus', _id: this.elmove, status: this.status[parseInt(evt.to.id)]})
+				},
 				indexPosition: function (v) {
 					for (j = 0; j < this.status.length; j++) {
 						if (v == this.status[j]) {
@@ -122,7 +138,7 @@ module.exports = function () {
 				}
 				,
 				newTask: function (nTask) { /* Función para crear nueva tarea. */
-					if (nTask.m == '' && this.titleItem != '') {
+					if (nTask.m == '' && this.titleItem.trim() != '') {
 						axios.post(urltask, qstring.stringify({
 							'work': this.titleItem,
 							'status': this.statustem,
@@ -134,7 +150,7 @@ module.exports = function () {
 						this.titleItem = "";
 						this.statustem = "";
 						this.tagsItem = [];
-					} else {
+					} else if (nTask._id != "" && nTask.m != "") {
 						if (nTask.work != "") {
 							this.task.push({
 								_id: nTask._id,
@@ -173,7 +189,7 @@ module.exports = function () {
 				changeTitle: function () { // Cambiar titulo por uno nuevo.
 					d = document.getElementById('textTitle')
 					this.opt.titleEdit = false
-					axios.put(url + '/api/momantai/plam/t/' + this.taskInfo._id, qstring.stringify({
+					axios.put(url + '/api/'+ownerG+'/'+projectG+'/t/' + this.taskInfo._id, qstring.stringify({
 						newTitle: this.taskInfo.work,
 						action: 'title'
 					}))
@@ -184,7 +200,7 @@ module.exports = function () {
 					d = document.getElementById('textDescription')
 					this.opt.descriptionEdit = false
 					this.taskInfo.description = d.innerHTML
-					axios.put(url + '/api/momantai/plam/t/' + this.taskInfo._id, qstring.stringify({
+					axios.put(url + '/api/'+ownerG+'/'+projectG+'/t/' + this.taskInfo._id, qstring.stringify({
 						newDescription: this.taskInfo.description,
 						action: 'description'
 					}))
@@ -223,7 +239,7 @@ module.exports = function () {
 					this._idtofile = _id
 
 					if (_id != "") {
-						axios.get(url + '/api/momantai/plam/t/' + _id)
+						axios.get(url + '/api/'+ownerG+'/'+projectG+'/t/' + _id)
 							.then(response => (tb.taskInfo = response.data.task[0]))
 					}
 				},
@@ -232,7 +248,7 @@ module.exports = function () {
 					var form = new FormData()
 					form.append('file', event.target.files[0])
 					form.append('namefile', event.target.files[0].name)
-					axios.post(url + '/momantai/plam/upFile/' + this._idtofile, form)
+					axios.post(url + '/'+ownerG+'/'+projectG+'/upFile/' + this._idtofile, form)
 						.then(res => {
 							if (!this.taskInfo.hasOwnProperty('resources')) {
 								console.log('Entro!')
@@ -258,7 +274,7 @@ module.exports = function () {
 				// Area de Todo (Checklist) CRUD
 				addTodo: function () {
 
-					axios.put(url + '/api/momantai/plam/t/' + this.taskInfo._id, qstring.stringify({
+					axios.put(url + '/api/'+ownerG+'/'+projectG+'/t/' + this.taskInfo._id, qstring.stringify({
 						action: 'todo',
 						actodo: 'create',
 						todo: this.todo
@@ -272,7 +288,7 @@ module.exports = function () {
 
 				},
 				deleteTodo: function (id) {
-					axios.put(url + '/api/momantai/plam/t/' + this.taskInfo._id, qstring.stringify({
+					axios.put(url + '/api/'+ownerG+'/'+projectG+'/t/' + this.taskInfo._id, qstring.stringify({
 						action: 'todo',
 						actodo: 'delete',
 						_id: this.taskInfo.todo[id]._id,
@@ -283,7 +299,7 @@ module.exports = function () {
 					//this.todo = this.taskInfo.todo[id].todo
 					//this.deleteTodo(id)
 					if (this.todobolean) {
-						axios.put(url + '/api/momantai/plam/t/' + this.taskInfo._id, qstring.stringify({
+						axios.put(url + '/api/'+ownerG+'/'+projectG+'/t/' + this.taskInfo._id, qstring.stringify({
 							action: 'todo',
 							actodo: 'update',
 							_id: this.taskInfo.todo[this.todotempid]._id,
@@ -303,7 +319,7 @@ module.exports = function () {
 				},
 				checkTodo: function (id) {
 					if (this.taskInfo.todo[id].check == '') {
-						axios.put(url + '/api/momantai/plam/t/' + this.taskInfo._id, qstring.stringify({
+						axios.put(url + '/api/'+ownerG+'/'+projectG+'/t/' + this.taskInfo._id, qstring.stringify({
 							action: 'todo',
 							actodo: 'update',
 							_id: this.taskInfo.todo[id]._id,
@@ -313,7 +329,7 @@ module.exports = function () {
 						console.log(this.taskInfo.todo[id]._id)
 						this.taskInfo.todo[id].check = 'check'
 					} else {
-						axios.put(url + '/api/momantai/plam/t/' + this.taskInfo._id, qstring.stringify({
+						axios.put(url + '/api/'+ownerG+'/'+projectG+'/t/' + this.taskInfo._id, qstring.stringify({
 							action: 'todo',
 							actodo: 'update',
 							'_id': this.taskInfo.todo[id]._id,
@@ -322,13 +338,40 @@ module.exports = function () {
 						}))
 						console.log(this.taskInfo.todo[id]._id)
 					}
-				}
+				},
+
+
+				// DRAG AND DROP
+
+				onEnd: function(evt){
+				},
+				checkMove: function(evt,originalEvent){
+				  console.log('draggedContext', evt.draggedContext);
+				  console.log('relatedContext', evt.relatedContext);
+				  // I can not drag with an apple
+				  return (evt.draggedContext.element.name!=='Apple');
+				},
+				insertItem: function(){
+				  var self = this;
+				  var newNo = 1;
+				  
+				  if(self.items.concat().length > 0)
+					newNo =  Math.max.apply(null, self.items.concat().map(function(item){return item.no;})) +1;
+				  
+				  this.items.push(
+					{
+					  no:　newNo,
+					  name:'banana'+newNo,
+					  categoryNo:'3'
+					}
+					);
+				  self.count =  self.count+1;
+				},
+				deleteItem: function(item, index){
+				  this.items.splice(index, 1);
+				},
 			}
 		})
 
 	})();
-
-	self.home = function () {
-		spa.n.navigate("home");
-	}
 };

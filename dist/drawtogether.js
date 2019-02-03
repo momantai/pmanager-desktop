@@ -2,9 +2,9 @@ var spa = null;
 (function () {
      document.onreadystatechange = function () {
           if (document.readyState == "complete") {
-               var sauna = require("./js/sauna");
+               sauna = require('./module/sauna.js')
                spa = sauna(document.getElementById("contentapp"));
-               spa.n.navigate("home");
+               spa.n.navigate("kproject");
           }
-     }; 
+     };
 })();

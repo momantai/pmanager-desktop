@@ -16,7 +16,7 @@ function createWindow() {
     win.setMenuBarVisibility(false)
 
     win.loadURL(url.format({
-        pathname: path.join(__dirname, 'init.html'),
+        pathname: path.join(__dirname, 'dist/app.html'),
         protocol: 'file',
         slashes: true
     }))

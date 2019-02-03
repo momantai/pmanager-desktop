@@ -46,7 +46,7 @@
     .task-table, .title-head-tb {
         /* background-color: white; */
         /* background: #e9eaeb; */
-        min-height: 15px;
+        min-height: 50px;
         margin: 0 5px;
         /* box-shadow: 0 0 0 1px rgba(61,70,79,.05),0 1px 3px 0 rgba(61,70,79,.15); */
         /* box-shadow: 0 0 0 1px floralwhite;
@@ -56,6 +56,9 @@
         flex-direction: column;
         overflow-y: hidden;
         padding-bottom: 10px;
+    }
+    .task-table {
+        min-height: 100px;
     }
 
 /*************** SCROLL Visual todo board ****************/
@@ -190,7 +193,7 @@
                 display: none;
             }
             .item-task:hover .action-buttons {
-                display: flex;
+                display: none;
             }
                 .button-icon {
                     margin-top: 5px;

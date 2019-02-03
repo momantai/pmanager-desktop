@@ -1,0 +1,74 @@
+
+<!-- Kindergarten project-->
+<div id="kproject" data-vm="kproject"> 
+  <div id="pviews">
+    <div class="alert displayhidden" id="alertt">
+      <div class="titlep">¡Título actualizado! Correctamente.</div>
+    </div>
+    <div class="modal hidden" id="modal-c-p">
+      <div class="backg-modal" @click="modalCreate"></div>
+      <div class="boxModal" id="modalcProject">
+        <div class="titleModal">
+          <p class="title">¡Crear un nuevo proyecto!</p>
+        </div>
+        <div class="data-project">
+          <div class="form">
+            <input class="formcp" id="NUEVOTITULO" type="text" placeholder="Nuevo título"/>
+            <div>
+              <label>momantai</label>
+              <input class="formcp" type="text" v-model="idpm" v-bind:value="clean" placeholder="id-ejemplo-proyecto" title="¡Haz que compartir tu proyecto sea más fácil!"/>
+            </div>
+            <div class="opt-form"><span class="btn-create" @click="wCreate">Crear</span><span class="btn-cancel" @click="modalCreate">Cancelar</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal hidden" id="modal-p">
+      <div class="backg-modal" @click="modal"></div>
+      <div class="boxModal" id="modalProject">
+        <div class="titleModal">
+          <p class="title">Editando información de proyecto</p>
+        </div>
+        <div class="data-project">
+          <div class="form">
+            <input class="formp" id="TITLE" type="text" @blur="updateTitle" v-bind:value="datap.title" placeholder="Título"/>
+            <div class="formp" id="DESCRIPTION" @blur="updateDescription" data-placeholder="Descripción" contenteditable="true">{{datap.description}}</div>
+            <label class="formp">{{datap.proyect_id}}</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="box-content">
+      <div class="show-proyects">
+        <div class="box-topshowproyect">
+          <input class="search" type="text" name="search" placeholder="Buscar.."/>
+        </div>
+        <div class="showbox">
+          <div class="proyect-preview" v-for="pv in dataps">
+            <div class="title-p"><a :href="'https://www.pmanagerd.bluemix.net/'+pv.owner+'/'+pv.project_id"></a>
+              <p style="cursor: pointer" @click="enterProject(pv.owner, pv.proyect_id)">{{pv.title}}</p>
+            </div>
+            <div class="bottom-p-preview">
+              <div class="option-p-preview">
+                <div class="op-icon task-icon"></div>
+                <div class="op-option"><a @click="enterProject(pv.owner, pv.proyect_id)">{{pv.task.length}} Tareas</a></div>
+              </div>
+              <div class="option-p-preview">
+                <div class="op-icon members-icon"></div>
+                <div class="op-option"><a href="#">5 Miembros</a></div>
+              </div>
+              <div class="option-p-preview">
+                <div class="op-icon edit-icon"></div>
+                <div class="op-option"><a @click="selectProject(pv.owner, pv.proyect_id)">Editar</a></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="createPjct" title="Crear un proyecto" @click="modalCreate">
+      <p>+</p>
+    </div>
+  </div>
+</div>
+<script src="kproject.js"></script>
