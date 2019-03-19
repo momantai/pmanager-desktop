@@ -1,1 +1,1 @@
-pmanager-desktop
+PManager Desktop.
