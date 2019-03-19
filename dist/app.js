@@ -1,12 +1,4 @@
-url = 'http://127.0.0.1:5000/api/'
-
-const Vue = require('vue/dist/vue')
-const axios = require('axios')
-qstring = require('querystring')
-
-console.log("¡Iniciando aplicación!")
-
-axios.get(url + 'projects/momantai')
+axios.get(url + '/api/projects/momantai')
     .then((response) => {
         vp.dataps = response.data
         console.log(response.data)
@@ -75,7 +67,7 @@ let vp = new Vue({
                     title: nt.value,
                     _id: this.idpm
                 })
-                axios.put(url + 'projects/' + 'momantai', data)
+                axios.put(url + '/api/projects/' + 'momantai', data)
                     .then((response) => {
                         r = response.data
                         if (r.ok != 'ok') {
@@ -91,7 +83,7 @@ let vp = new Vue({
             }
         },
         selectProject: function (owner, id) {
-            axios.get(url + 'project/' + owner + '/' + id)
+            axios.get(url + '/api/project/' + owner + '/' + id)
                 .then((response) => {
                     this.modal()
                     this.datap = response.data
@@ -115,7 +107,7 @@ let vp = new Vue({
                     type: 'update'
                 })
 
-                axios.put(url + 'project/' + this.datap.owner + '/' + this.datap.proyect_id, data)
+                axios.put(url + '/api/project/' + this.datap.owner + '/' + this.datap.proyect_id, data)
                     .then((response) => {
                         console.log(response.data)
                         this.datap.title = t
@@ -133,7 +125,7 @@ let vp = new Vue({
                     type: 'update'
                 })
 
-                axios.put(url + 'project/' + this.datap.owner + '/' + this.datap.proyect_id, data)
+                axios.put(url + '/api/project/' + this.datap.owner + '/' + this.datap.proyect_id, data)
                     .then((response) => {
                         console.log(response.data)
                         this.datap.description = d.innerText
@@ -153,7 +145,7 @@ let vp = new Vue({
                 type: 'addcoll'
             })
 
-            axios.put(url + 'project/' + this.datap.owner + '/' + this.datap.proyect_id, data)
+            axios.put(url + '/api/project/' + this.datap.owner + '/' + this.datap.proyect_id, data)
                 .then((response) => {
                     if (response.data.ok == 'ok') {
                         this.datap.collaborators.push(c.value)
@@ -164,6 +156,15 @@ let vp = new Vue({
                         alert('¡El usuario no existe aún!\nCuentale a un amigo de Pmanager.')
                     }
                 })
+        },
+        opentaskboard: function(user, project) {
+            axios.get(url + '/api/' + user + '/' + project + '/task')
+                .then(response => (tb.task = response.data.task))
+                
+                pdataident = [user, project]
+                urltask = url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/task'
+
+                wboard.style.display = "block";
         }
 
     }
