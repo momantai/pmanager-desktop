@@ -7,10 +7,6 @@
 	font-family: Arial;
 }
 
-body {
-	/* background-color: #f4f6f9; */
-	/* background-color: #fafbfc; */
-}
 
 #pviews {
 	width: 100%;
@@ -261,6 +257,9 @@ body {
 					color: #FFF;
 					cursor: pointer;
 				}
+					.menu-settings:hover {
+						display: block;
+					}
 
 	/* Items */
 	.circle {
