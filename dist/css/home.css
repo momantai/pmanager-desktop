@@ -310,6 +310,7 @@
 
 	.contenedordetodo {
 		margin-top: 12px;
+		min-width: 850px;
 	}
 
 	.proyect-preview:hover .edit {

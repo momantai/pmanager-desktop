@@ -10,14 +10,16 @@ socket.on('message', (msg) => {
 	} else if (msg.typeAction == 'deleteTask') {
 		tb.deleteTask(msg)
 	} else if (msg.typeAction == 'title') {
-		tb.taskEdit(msg)
+		tb.applyedit(msg)
+	} else if(msg.typeAction == 'newlist'){
+		tb.addnewlist(msg)
 	} else {
-		tb.newTask(msg)
+		tb.addTask(msg)
 	}
 })
 
 axios.get(urltask)
-	.then(response => (tb.task = response.data.task))
+	.then(response => (tb.task = response.data))
 
 let tb = new Vue({
 	el: '#main',
@@ -36,7 +38,8 @@ let tb = new Vue({
 		titleItem: "",
 		statustem: "backlog",
 		tagsItem: [],
-		taskInfo: [],
+		taskdetails: [],
+		taskresources:[],
 		tagOpt: '',
 		opt: {
 			'titleEdit': false,
@@ -49,50 +52,49 @@ let tb = new Vue({
 		todo: '',
 		todotempid: '',
 		todobolean: false,
-		elmove: ""
-	},
-	computed: {
-		taskboard() { // Crear listas de acuerdo a los status existentes de las tareas.
-			let boards = []
-			let temp = null
-			if (this.temptask.length == 0) {
-				for (var i = 0, l = this.status.length; i < l; i++) {
-					temp = this.task.filter(task => task.status.indexOf(this.status[i]) === 0)
-
-					boards.push(temp)
-				}
-			} else {
-				for (var i = 0, l = this.status.length; i < l; i++) {
-					temp = this.temptask.filter(task => task.status.indexOf(this.status[i]) === 0)
-
-					boards.push(temp)
-				}
-			}
-
-			delete temp
-			this.indexed
-			return boards
+		elmove: "",
+		statustask: '',
+		namenewlist: '',
+		dataconf: {
+			'user': '',
+			'project': ''
 		},
-		indexed() {
-			index = {}
-			for (i = 0, j = this.task.length; i < j; i++) {
-				index[this.task[i]._id] = i
-			}
-			this.index = index
+		moveposition: {
+			element: '',
+			init: '',
+			final: '',
+			index: 0,
+			futureIndex: 0
 		}
 	},
 	methods: { // indexPosition para saber el indice de un estado.
+
+		/******************************************************************
+			Area de funciones de los metodos de Drag and Drop para las tareas.
+		*/
 		onMove: function (evt, originalEvent) {
 			this.elmove = evt.draggedContext.element._id
+			this.moveposition.element = evt.draggedContext.element._id
+			console.log(evt.draggedContext)
+			this.moveposition.index = evt.draggedContext.index
+			this.moveposition.futureIndex = evt.draggedContext.futureIndex
 		},
 		onStart: function (evt) {
-			console.log(evt.from.id)
+			this.moveposition.init = evt.from.id
 		},
 		End: function (evt) {
-			console.log(evt.to.id)
-			console.log(this.onMove)
-			this.changeStatus({ 'm': 'rm', 'status': this.status[parseInt(evt.to.id)], '_id': this.elmove })
-			socket.emit('message', { m: 'rm', typeAction: 'changeStatus', _id: this.elmove, status: this.status[parseInt(evt.to.id)] })
+			this.moveposition.final = evt.to.id
+			this.moveposition.action = 'movetolist'
+			console.log(this.moveposition)
+
+			urllist = url + '/api/' + this.dataconf.user + '/' + this.dataconf.project + '/l'
+
+			axios.post(urllist, qstring.stringify(this.moveposition))
+			//console.log(evt.to.id)
+			// console.log(this.onMove)
+			// console.log(this.elmove)
+			//this.changeStatus({ 'm': 'rm', 'status': this.status[parseInt(evt.to.id)], '_id': this.elmove })
+			//socket.emit('message', { m: 'rm', typeAction: 'changeStatus', _id: this.elmove, status: this.status[parseInt(evt.to.id)] })
 		},
 		indexPosition: function (v) {
 			for (j = 0; j < this.status.length; j++) {
@@ -111,75 +113,38 @@ let tb = new Vue({
 			}
 			this.temptask = temp
 			delete temp
-		}
-		,
-		newTask: function (nTask) { /* Función para crear nueva tarea. */
-			if (nTask.m == '' && this.titleItem.trim() != '') {
+		},
+		tastap: function(){
+			this.status = {}
+			for(i = 0, j = this.task.lists.length; i<j; i++) {
+				this.status[this.task.lists[i]._id] = i
+			}
+		},
+
+		/******************************************************************
+			Area de tareas de un projecto.
+		*/
+		newTask: function() { /* Función para crear nueva tarea. */
+			if (this.titleItem.trim() != '') {
 				axios.post(urltask, qstring.stringify({
-					'work': this.titleItem,
+					'name': this.titleItem,
 					'status': this.statustem,
 					'typeAction': 'create',
-					'tags': String(this.tagsItem),
-					'm': 'mr'
+					'tags': String(this.tagsItem)
 				}));
 
 				this.titleItem = "";
 				this.statustem = "";
 				this.tagsItem = [];
-			} else if (nTask._id != "" && nTask.m != "") {
-				if (nTask.work != "") {
-					this.task.push({
-						_id: nTask._id,
-						status: nTask.status,
-						work: nTask.work,
-						tag: nTask.tag
-					});
-				}
 			}
 		},
-		taskEdit: function (tEdit) { /* Función para editar una tarea existente. */
-			if (tEdit.m == '') {
-				axios.put(urltask, qstring.stringify({
-					typeAction: 'taskEdit',
-					_id: tEdit.i,
-					work: tEdit.work,
-					m: 'rm'
-				}))
-			} else {
-				this.task[this.index[tEdit._id]].work = tEdit.work
+		addTask: function(add) {
+			if (add.name != "") {
+				this.task.liststodo[this.status[add.status]].things.push({
+					_id: add._id,
+					name: add.name
+				})
 			}
-		},
-		changeStatus: function (changeS) { /* F. para cambiar el estado de una tarea. */
-			if (changeS.m == '') {
-				axios.put(urltask, qstring.stringify({
-					typeAction: 'changeStatus',
-					_id: changeS.i,
-					status: changeS.s,
-					move: changeS.t,
-					m: 'rm'
-				}))
-			} else {
-				this.task[this.index[changeS._id]].status = changeS.status
-			}
-		},
-		changeTitle: function () { // Cambiar titulo por uno nuevo.
-			d = document.getElementById('textTitle')
-			this.opt.titleEdit = false
-			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskInfo._id, qstring.stringify({
-				newTitle: this.taskInfo.work,
-				action: 'title'
-			}))
-
-			this.task[this.index[this.taskInfo._id]].work = this.taskInfo.work
-		},
-		changeDescription: function () { // Agregar o actualizar descripción de una tarea.
-			d = document.getElementById('textDescription')
-			this.opt.descriptionEdit = false
-			this.taskInfo.description = d.innerHTML
-			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskInfo._id, qstring.stringify({
-				newDescription: this.taskInfo.description,
-				action: 'description'
-			}))
 		},
 		deleteTask: function (dTask) { /* Función para eliminar una tarea. */
 			if (dTask.m == '') {
@@ -195,6 +160,68 @@ let tb = new Vue({
 				this.task.splice(this.index[dTask.id], 1)
 			}
 		},
+		newnametask: function () {
+			d = document.getElementById('textTitle')
+			this.opt.titleEdit = false
+			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskdetails._id, qstring.stringify({
+				newTitle: this.taskdetails.name,
+				action: 'title',
+				sta: this.statustask
+			}))
+
+			this.task[this.index[this.taskdetails._id]].work = this.taskdetails.name
+		},
+		newdetailstask: function () {
+			d = document.getElementById('textDescription')
+			this.opt.descriptionEdit = false
+			this.taskdetails.details = d.innerHTML
+			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskdetails._id, qstring.stringify({
+				newdetails: this.taskdetails.details,
+				action: 'description'
+			}))
+		},
+
+		/******************************************************************
+			Area de listas o estados que contienen a las tareas.
+		*/
+		newlist: function() {
+			urlnewlist = url + '/api/' + this.dataconf.user + '/' + this.dataconf.project + '/l'
+			this.namenewlist
+			axios.post(urlnewlist, qstring.stringify({
+				'name': this.namenewlist,
+				'action': 'newlist'
+			}))
+		},
+		addnewlist: function(nl){
+			this.task.lists.push({'_id': nl._id, 'td':nl.td})
+			this.task.liststodo.push({'things': [], '_thingstoid': nl._id})
+			this.status[nl._id] = Object.keys(this.status).length
+		},
+		applyedit: function(edit) {
+			for(i = 0, j = this.task.liststodo[this.status[edit.sta]].things.length; i<j; i++) {
+				if(this.task.liststodo[this.status[edit.sta]].things[i]._id == edit._id) {
+					this.task.liststodo[this.status[edit.sta]].things[i].name = edit.name
+					break
+				}
+			}
+		},
+
+		/******************************************************************
+			Otras funciones.
+		*/
+		changeStatus: function (changeS) { /* F. para cambiar el estado de una tarea. */
+			if (changeS.m == '') {
+				axios.put(urltask, qstring.stringify({
+					typeAction: 'changeStatus',
+					_id: changeS.i,
+					status: changeS.s,
+					move: changeS.t,
+					m: 'rm'
+				}))
+			} else {
+				this.task[this.index[changeS._id]].status = changeS.status
+			}
+		},
 		oculteEl: function (idE, classE) {
 			if (document.getElementById("Modal").classList.contains("hidden")) {
 				document.getElementById("Modal").classList.remove("hidden");
@@ -208,17 +235,26 @@ let tb = new Vue({
 			this.statustem = statusN;
 			this.oculteEl('Modal', 'hidden')
 		},
-		taskInformation: function (_id = "") {
+		taskInformation: function (_id = "", sta) {
 			tI = document.getElementById('modal_task')
 			tI.classList.toggle('hidden')
-
+			this.statustask = sta
 			this._idtofile = _id
 
 			if (_id != "") {
 				axios.get(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + _id)
-					.then(response => (tb.taskInfo = response.data.task[0]))
+					.then((r) =>{
+						this.taskdetails = r.data.things
+						this.taskresources = r.data.resource
+					})
+					//.then(response => (tb.taskInfo = response.data.task[0]))
 			}
 		},
+
+
+		/******************************************************************
+			Area Sources and Files de una tarea.
+		*/
 		nfile: function (event) { // Subir recurso a servidor.
 			console.log(event.target.files[0])
 			var form = new FormData()
@@ -226,12 +262,12 @@ let tb = new Vue({
 			form.append('namefile', event.target.files[0].name)
 			axios.post(url + '/' + pdataident[0] + '/' + pdataident[1] + '/upFile/' + this._idtofile, form)
 				.then(res => {
-					if (!this.taskInfo.hasOwnProperty('resources')) {
+					if (!this.taskresources.hasOwnProperty('resources')) {
 						console.log('Entro!')
-						this.taskInfo.resources = [{}]
+						this.taskresources.resources = [{}]
 					}
 					console.log(res.data)
-					this.taskInfo.resources.push(res.data)
+					this.taskresources.resources.push(res.data)
 				})
 
 		},
@@ -247,15 +283,19 @@ let tb = new Vue({
 				console.log('Dio un click')
 			}
 		},
-		// Area de Todo (Checklist) CRUD
+
+
+		/******************************************************************
+			Area de 'To-do' dentro de una tarea.
+		*/
 		addTodo: function () {
 
-			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskInfo._id, qstring.stringify({
+			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskdetails._id, qstring.stringify({
 				action: 'todo',
 				actodo: 'create',
 				todo: this.todo
 			})).then(res => {
-				this.taskInfo.todo.push(res.data)
+				this.taskresources.todo.push(res.data)
 				console.log(res.data)
 			})
 
@@ -264,56 +304,50 @@ let tb = new Vue({
 
 		},
 		deleteTodo: function (id) {
-			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskInfo._id, qstring.stringify({
+			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskdetails._id, qstring.stringify({
 				action: 'todo',
 				actodo: 'delete',
-				_id: this.taskInfo.todo[id]._id,
+				_id: this.taskresources.todo[id]._id,
 			}))
-			this.taskInfo.todo.splice(id, 1)
+			this.taskresources.todo.splice(id, 1)
 		},
 		editTodo: function (id) {
-			//this.todo = this.taskInfo.todo[id].todo
-			//this.deleteTodo(id)
 			if (this.todobolean) {
-				axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskInfo._id, qstring.stringify({
+				axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskdetails._id, qstring.stringify({
 					action: 'todo',
 					actodo: 'update',
-					_id: this.taskInfo.todo[this.todotempid]._id,
+					_id: this.taskresources.todo[this.todotempid]._id,
 					todo: this.todo,
-					check: this.taskInfo.todo[this.todotempid].check
+					check: this.taskresources.todo[this.todotempid].check
 				}))
 
 				this.todobolean = false
-				this.taskInfo.todo[this.todotempid].todo = this.todo
+				this.taskresources.todo[this.todotempid].todo = this.todo
 				this.todo = ''
 				this.todotempid = ''
 			} else {
 				this.todobolean = true
-				this.todo = this.taskInfo.todo[id].todo
+				this.todo = this.taskresources.todo[id].todo
 				this.todotempid = id
 			}
 		},
 		checkTodo: function (id) {
-			if (this.taskInfo.todo[id].check == '') {
-				axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskInfo._id, qstring.stringify({
-					action: 'todo',
-					actodo: 'update',
-					_id: this.taskInfo.todo[id]._id,
-					todo: this.taskInfo.todo[id].todo,
-					check: 'check'
-				}))
-				console.log(this.taskInfo.todo[id]._id)
-				this.taskInfo.todo[id].check = 'check'
-			} else {
-				axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskInfo._id, qstring.stringify({
-					action: 'todo',
-					actodo: 'update',
-					'_id': this.taskInfo.todo[id]._id,
-					'todo': this.taskInfo.todo[id].todo,
-					'check': ''
-				}))
-				console.log(this.taskInfo.todo[id]._id)
+			checkoption = ''
+			if(this.taskresources.todo[id].check == '') {
+				checkoption = 'check'
 			}
+
+			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskdetails._id, qstring.stringify({
+				action: 'todo',
+				actodo: 'update',
+				_id: this.taskresources.todo[id]._id,
+				todo: this.taskresources.todo[id].todo,
+				check: checkoption
+			}))
+
+			this.taskresources.todo[id].check = checkoption
+
+			console.log(this.taskresources.todo[id]._id)
 		},
 
 

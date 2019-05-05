@@ -1,0 +1,23 @@
+# Task Board.
+
+<div id="tabinfo" class="" style="border: 0px solid #ccc;">
+                <div class="boxes">
+                    <div>
+                        <!-- <h2 style="color: cadetblue">{{taskboard[0].length}}</h2> -->
+                        <p>Tareas por realizar</p>
+                    </div>
+                </div>
+                <div class="boxes">
+                    <div>
+                        <!-- <h2 style="color: orange">{{taskboard[1].length + taskboard[2].length}}</h2> -->
+                        <p>Tareas en progreso</p>
+                    </div>
+                </div>
+                <div class="boxes">
+                    <div>
+                        <!-- <h2 style="color: green">{{taskboard[3].length}}</h2> -->
+                        <p>Tareas terminadas</p>
+                    </div>
+                </div>
+                <div class="boxes"></div>
+            </div>

@@ -42,6 +42,7 @@
 }
     .title-head-tb {
         box-shadow: 0 0 0 1px darkgrey;
+        max-width: 240px;
     }
     .task-table, .title-head-tb {
         /* background-color: white; */
@@ -59,6 +60,7 @@
     }
     .task-table {
         min-height: 100px;
+        max-width: 240px;
     }
 
 /*************** SCROLL Visual todo board ****************/

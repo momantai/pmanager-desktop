@@ -50,8 +50,8 @@
                                 <input class="formp" id="TITLE" type="text" @blur="updateTitle"
                                     v-bind:value="datap.title" placeholder="Título" />
                                 <div class="formp" id="DESCRIPTION" @blur="updateDescription"
-                                    data-placeholder="Descripción" contenteditable="true">{{datap.description}}</div>
-                                <label class="formp">{{datap.proyect_id}}</label>
+                                    data-placeholder="Descripción" contenteditable="true">{{datap.details}}</div>
+                                <label class="formp">{{datap.project_id}}</label>
                             </div>
                         </div>
                     </div>
@@ -91,15 +91,15 @@
                                             :href="'https://www.pmanagerd.bluemix.net/'+pv.owner+'/'+pv.project_id"></a>
                                         <!-- <p style="cursor: pointer" @click="enterProject(pv.owner, pv.proyect_id)">
                                             {{pv.title}}</p> -->
-                                            <p style="cursor: pointer" @click="opentaskboard(pv.owner, pv.proyect_id)">
+                                            <p style="cursor: pointer" @click="opentaskboard(pv.leader, pv.project_id)">
                                                     {{pv.title}}</p>
                                     </div>
                                     <div class="bottom-p-preview">
                                         <div class="option-p-preview">
                                             <div class="op-icon task-icon"></div>
-                                            <div class="op-option"><a
+                                            <!-- <div class="op-option"><a
                                                     @click="enterProject(pv.owner, pv.proyect_id)">{{pv.task.length}}
-                                                    Tareas</a></div>
+                                                    Tareas</a></div> -->
                                         </div>
                                         <div class="option-p-preview">
                                             <div class="op-icon members-icon"></div>
@@ -108,7 +108,7 @@
                                         <div class="option-p-preview">
                                             <div class="op-icon edit-icon"></div>
                                             <div class="op-option"><a
-                                                    @click="selectProject(pv.owner, pv.proyect_id)">Editar</a></div>
+                                                    @click="selectProject(pv.leader, pv.project_id)">Editar</a></div>
                                         </div>
                                     </div>
                                 </div>
@@ -120,8 +120,16 @@
             </div>
         </div>
     </div>
+
+
+    <!--
+
+        ############## 11111111111111111111 ######################### 888888888888888888888 33333333333
+        77777777777777 ###########3333##### ************************* 999999999999999999999 00000000000
+    -->
     <!-- Vista del taskboad MOSTRAR/OCUTAR -->
-    <div id="contentboard" style="display: none">
+
+    <div id="contentboard" style="display: block">
         <div class="box-topshowproyect">
             <div class="search">
                 <div class="back"></div>
@@ -131,28 +139,7 @@
         </div>
 
         <div id="main">
-
-            <div id="tabinfo" class="" style="border: 0px solid #ccc;">
-                <div class="boxes">
-                    <div>
-                        <h2 style="color: cadetblue">{{taskboard[0].length}}</h2>
-                        <p>Tareas por realizar</p>
-                    </div>
-                </div>
-                <div class="boxes">
-                    <div>
-                        <h2 style="color: orange">{{taskboard[1].length + taskboard[2].length}}</h2>
-                        <p>Tareas en progreso</p>
-                    </div>
-                </div>
-                <div class="boxes">
-                    <div>
-                        <h2 style="color: green">{{taskboard[3].length}}</h2>
-                        <p>Tareas terminadas</p>
-                    </div>
-                </div>
-                <div class="boxes"></div>
-            </div>
+            
             <div class="tagback tags">
                 <div class="backtags" v-show="tagOpt">
                     <a @click="temptask = [], tagOpt = ''">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sin filtros < </a> <span>
@@ -190,12 +177,12 @@
                                         <div class="info_task">
                                             <div v-show="opt.titleEdit == false">
                                                 <span title="Doble click para editar."
-                                                    @dblclick="opt.titleEdit = true, opt.tempTitle = taskInfo.work">{{taskInfo.work}}</span>
+                                                    @dblclick="opt.titleEdit = true, opt.tempTitle = taskdetails.name">{{taskdetails.name}}</span>
                                             </div>
                                             <input id="textTitle" type="text" v-if="opt.titleEdit"
-                                                @keyup.13="changeTitle()"
-                                                @keyup.esc="opt.titleEdit = false, taskInfo.work = opt.tempTitle"
-                                                v-model='taskInfo.work'>
+                                                @keyup.13="newnametask()"
+                                                @keyup.esc="opt.titleEdit = false, taskdetails.name = opt.tempTitle"
+                                                v-model='taskdetails.name'>
                                         </div>
                                     </li>
                                     <li class="section-datat">
@@ -203,22 +190,22 @@
                                             <div v-show="opt.descriptionEdit == false">
                                                 <span class="title-sections-dtask">Descripción&nbsp;&nbsp;</span>
                                                 <a
-                                                    @click="opt.descriptionEdit = true, opt.tempInfo = taskInfo.description">Editar</a>
-                                                <div class="text-description" v-html="taskInfo.description"></div>
+                                                    @click="opt.descriptionEdit = true, opt.tempInfo = taskdetails.description">Editar</a>
+                                                <div class="text-description" v-html="taskdetails.details"></div>
                                             </div>
                                             <template v-if="opt.descriptionEdit">
                                                 <span class="title-sections-dtask">Descripción&nbsp;&nbsp;</span>
-                                                <a @click="changeDescription">Terminar edición</a> | <a
-                                                    @click="opt.descriptionEdit = false, taskInfo.description = opt.tempInfo">Cancelar</a>
-                                                <div id="textDescription" @keyup.esc="changeDescription"
-                                                    contentEditable="true" v-html="taskInfo.description"></div>
+                                                <a @click="newdetailstask">Terminar edición</a> | <a
+                                                    @click="opt.descriptionEdit = false, taskdetails.description = opt.tempInfo">Cancelar</a>
+                                                <div id="textDescription" @keyup.esc="newdetailstask"
+                                                    contentEditable="true" v-html="taskdetails.details"></div>
                                             </template>
                                             <div class="resources">
                                                 <input id="bfile" style="display:none" ref="bfiles" type="file"
                                                     v-on:change="nfile">
                                                 <span class="title-sections-dtask">Recursos</span>
                                                 <ol>
-                                                    <li v-for="r in taskInfo.resources">
+                                                    <li v-for="r in taskresources.resources">
                                                         <a :href="url+'/static/files/'+r._id"
                                                             :download=r.name>{{r.name}}</a>
                                                     </li>
@@ -240,7 +227,7 @@
                                                 <a @click="todobolean = false, todo = ''">Cancelar</a>
                                             </template>
                                             <ul id="checklist">
-                                                <li v-for="(item, key) in taskInfo.todo" :key="key">
+                                                <li v-for="(item, key) in taskresources.todo" :key="key">
                                                     <div class="textcheck">
                                                         <input type="checkbox" :id="key" v-model="item.check">
                                                         <label :for="key" @click="checkTodo(key)">{{item.todo}}</label>
@@ -262,31 +249,32 @@
 
                         <div class="head-taskboard">
                             <!-- <button @click="asd">assdas</button> -->
-                            <div class="title-head-tb" v-for="i in status">
-                                <div class="title-head-board title">{{statusEsp[i]}}</div>
+                            <div class="title-head-tb" v-for="i in task.lists">
+                                <div class="title-head-board title">{{i.td}}</div>
                                 <div class="icon-more-area">
-                                    <button class="icon more" id="moreItemid" @click="newItemE(i)"
+                                    <button class="icon more" id="moreItemid" @click="newItemE(i._id)"
                                         title="Tarea nueva"></button>
                                 </div>
+                            </div>
+                            <div class="title-head-tb">
+                                <input type="text" placeholder="Nueva lista +" @keyup.13="newlist" v-model="namenewlist">
                             </div>
                         </div>
 
                         <div class="container-taskboard">
-                            <div class="task-table" v-for="(i, key) in taskboard" :key="key">
+                            <div class="task-table" v-for="(i, key) in task.liststodo" :key="key">
                                 <div class="list-group drag">
-                                    <draggable :list="i" class="dragArea" :options="{handle:'.handle', group:'people'}"
-                                        :id="key" @end="End" @start="onStart" :move="onMove">
-                                        <div :id="s._id" class="item-task list-group-item handle" v-for="s in i">
-
-                                            <!-- <span :id="s._id" class="deletew" title="Eliminar" @click="deleteTask({i: s._id, m: ''})"></span> -->
-                                            <div class="titletask" :id="s._id" @click="taskInformation(s._id)">
-                                                <p :id="s._id" class="title-task">{{s.work}}</p>
+                                    <draggable :list="i.things" class="dragArea" :options="{handle:'.handle', group:'people'}"
+                                        :id="i._thingstoid" @end="End" @start="onStart" :move="onMove">
+                                        <div :id="s._id" class="item-task list-group-item handle" v-for="s in i.things">
+                                            <div class="titletask" :id="s._id" @click="taskInformation(s._id, i._thingstoid)">
+                                                <p :id="s._id" class="title-task">{{s.name}}</p>
                                             </div>
 
-                                            <div class="tags" v-if="s.tag">
+                                            <!-- <div class="tags" v-if="s.tag">
                                                 <p v-for="t in s.tag"><span @click="filterTag({t})">{{t}}&nbsp;</span>
                                                 </p>
-                                            </div>
+                                            </div> -->
 
                                             <div class="progress" v-if="s.progress">
                                                 <div class="p">{{s.progress}}</div>
@@ -294,7 +282,7 @@
                                             </div>
 
 
-                                            <div class="action-buttons">
+                                            <!-- <div class="action-buttons">
                                                 <div class="button-icon" v-if="indexPosition(s.status) != 0"
                                                     title="Retroceder"><i class="icon left bg-icon"
                                                         @click="changeStatus({i:s._id, s:s.status, t:'b', m:''})"></i>
@@ -306,11 +294,12 @@
                                                         class="icon right bg-icon"
                                                         @click="changeStatus({i:s._id, s:s.status, t:'n', m:''})"></i>
                                                 </div>
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </draggable>
                                 </div>
                             </div>
+                            <div class="task-table"></div>
                         </div>
                     </div>
                 </div>

@@ -73,7 +73,7 @@ let vp = new Vue({
                         if (r.ok != 'ok') {
                             alert('¡Ya tienes un proyecto\ncon ese identificador!')
                         } else {
-                            this.dataps.push({ 'owner': 'momantai', 'task': [], 'proyect_id': this.idpm, 'title': nt.value })
+                            this.dataps.push({ 'leader': 'momantai', 'task': [], 'project_id': this.idpm, 'title': nt.value })
                             alert('¡Tienes un nuevo proyecto!')
                             nt.value = ''
                             this.idpm = ''
@@ -107,7 +107,7 @@ let vp = new Vue({
                     type: 'update'
                 })
 
-                axios.put(url + '/api/project/' + this.datap.owner + '/' + this.datap.proyect_id, data)
+                axios.put(url + '/api/project/' + this.datap.leader + '/' + this.datap.project_id, data)
                     .then((response) => {
                         console.log(response.data)
                         this.datap.title = t
@@ -125,7 +125,7 @@ let vp = new Vue({
                     type: 'update'
                 })
 
-                axios.put(url + '/api/project/' + this.datap.owner + '/' + this.datap.proyect_id, data)
+                axios.put(url + '/api/project/' + this.datap.leader + '/' + this.datap.project_id, data)
                     .then((response) => {
                         console.log(response.data)
                         this.datap.description = d.innerText
@@ -159,8 +159,14 @@ let vp = new Vue({
         },
         opentaskboard: function(user, project) {
             axios.get(url + '/api/' + user + '/' + project + '/task')
-                .then(response => (tb.task = response.data.task))
+                .then(response => {
+                    (tb.task = response.data)
+                    tb.dataconf = {'user': user, 'project': project}
+                    tb.tastap()
+                })
                 
+                console.log(tb.task)
+
                 pdataident = [user, project]
                 urltask = url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/task'
 
