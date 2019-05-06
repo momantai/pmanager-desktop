@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import url('https://fonts.googleapis.com/css?family=Hind');
-@import url('./taskboard.css');
+/* @import url('./taskboard.css'); */
+@import url('./tbd.css');
 @import url('./modaltask.css');
 @import url('./tabinfo.css');
 @import url('check.css');

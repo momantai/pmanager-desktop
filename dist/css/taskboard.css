@@ -17,7 +17,6 @@
     .tboard::-webkit-scrollbar {
         height: 10px;
         position: absolute;
-        /* float: right; */
         opacity: 0;
     }
     .tboard::-webkit-scrollbar-track {
@@ -30,10 +29,14 @@
 
 /*********************************************************/
 
+#todo-board {
+    width: 900px;
+}
+
 .container-taskboard, .head-taskboard {
-    width: 966px;
+    /* width: 966px; */
     height: 360px;
-    display: flex;
+    /* display: flex; */
 }
 
 /****** Cabecera de secciones de vistas de los items *****/
@@ -42,7 +45,7 @@
 }
     .title-head-tb {
         box-shadow: 0 0 0 1px darkgrey;
-        max-width: 240px;
+        width: 240px;
     }
     .task-table, .title-head-tb {
         /* background-color: white; */
@@ -53,11 +56,14 @@
         /* box-shadow: 0 0 0 1px floralwhite;
         box-shadow: 0 1px 3px 0 #d4d4d5,0 0 0 1px #d4d4d5; */
         border-radius: 5px;
-        flex: 1;    
+        /* flex: 1;     */
         flex-direction: column;
         overflow-y: hidden;
         padding-bottom: 10px;
     }
+        .namelist {
+            width: 200px;
+        }
     .task-table {
         min-height: 100px;
         max-width: 240px;
@@ -229,20 +235,8 @@
                     .bg-icon:hover {
                         background-color: #0A84FF;
                     }
-                        .play {
-                            background-image: url('./img/play.svg');
-                        }
                         .comment {
                             background-image: url('./img/comment.svg');
-                        }
-                        .pause {
-                            background-image: url('./img/pause.svg');
-                        }
-                        .left {
-                            background-image: url('./img/back.svg');
-                        }
-                        .right {
-                            background-image: url('./img/next.svg');
                         }
                         .more {
                             background-image: url('./img/more.svg');

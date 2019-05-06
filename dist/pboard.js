@@ -90,11 +90,6 @@ let tb = new Vue({
 			urllist = url + '/api/' + this.dataconf.user + '/' + this.dataconf.project + '/l'
 
 			axios.post(urllist, qstring.stringify(this.moveposition))
-			//console.log(evt.to.id)
-			// console.log(this.onMove)
-			// console.log(this.elmove)
-			//this.changeStatus({ 'm': 'rm', 'status': this.status[parseInt(evt.to.id)], '_id': this.elmove })
-			//socket.emit('message', { m: 'rm', typeAction: 'changeStatus', _id: this.elmove, status: this.status[parseInt(evt.to.id)] })
 		},
 		indexPosition: function (v) {
 			for (j = 0; j < this.status.length; j++) {
@@ -349,36 +344,5 @@ let tb = new Vue({
 
 			console.log(this.taskresources.todo[id]._id)
 		},
-
-
-		// DRAG AND DROP
-
-		// onEnd: function (evt) {
-		// },
-		// checkMove: function (evt, originalEvent) {
-		// 	console.log('draggedContext', evt.draggedContext);
-		// 	console.log('relatedContext', evt.relatedContext);
-		// 	// I can not drag with an apple
-		// 	return (evt.draggedContext.element.name !== 'Apple');
-		// },
-		// insertItem: function () {
-		// 	var self = this;
-		// 	var newNo = 1;
-
-		// 	if (self.items.concat().length > 0)
-		// 		newNo = Math.max.apply(null, self.items.concat().map(function (item) { return item.no; })) + 1;
-
-		// 	this.items.push(
-		// 		{
-		// 			no: newNo,
-		// 			name: 'banana' + newNo,
-		// 			categoryNo: '3'
-		// 		}
-		// 	);
-		// 	self.count = self.count + 1;
-		// },
-		// deleteItem: function (item, index) {
-		// 	this.items.splice(index, 1);
-		// },
 	}
 })
