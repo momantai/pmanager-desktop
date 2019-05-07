@@ -276,7 +276,7 @@
                     <div id="todo-board">
                         <div class="head-taskboard">
                             <!-- Cabecera de task board, con opciones para crear nueva tarea en listas. -->
-                            <div class="title-head-tb" v-for="i in task.lists">
+                            <div class="title-head-tb" v-for="i in task.lists" :style='{backgroundColor: i.color}'>
                                 <div class="namelist">
                                 <div class="title-head-board title">
                                     {{i.td}}
@@ -291,7 +291,7 @@
                             </div>
 
                             <!-- Input para crear una nueva lista de tareas. -->
-                            <div class="title-head-tb">
+                            <div class="title-head-tb" :style='{backgroundColor:"red"}'>
                                 <input type="text" placeholder="Nueva lista +" 
                                     @keyup.13="newlist" 
                                     v-model="namenewlist">
@@ -299,7 +299,7 @@
                         </div>
 
                         <div class="container-taskboard">
-                            <div class="task-table" v-for="(i, key) in task.liststodo" :key="key">
+                            <div class="task-table" v-for="(i, key) in task.liststodo" :key="key" :style='{backgroundColor: task.lists[key].color}'>
                                 <div class="list-group drag">
                                     <draggable 
                                         class="dragArea" 

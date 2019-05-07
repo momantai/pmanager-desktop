@@ -188,7 +188,7 @@ let tb = new Vue({
 			}))
 		},
 		addnewlist: function(nl){
-			this.task.lists.push({'_id': nl._id, 'td':nl.td})
+			this.task.lists.push({'_id': nl._id, 'td':nl.td, 'color':nl.color})
 			this.task.liststodo.push({'things': [], '_thingstoid': nl._id})
 			this.status[nl._id] = Object.keys(this.status).length
 		},
