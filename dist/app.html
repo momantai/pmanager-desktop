@@ -299,7 +299,7 @@
                         </div>
 
                         <div class="container-taskboard">
-                            <div class="task-table" v-for="(i, key) in task.liststodo" :key="key" :style='{backgroundColor: task.lists[key].color}'>
+                            <div class="task-table" v-for="(i, key) in task.liststodo" :key="key">
                                 <div class="list-group drag">
                                     <draggable 
                                         class="dragArea" 
@@ -308,7 +308,8 @@
                                         :id="i._thingstoid"
                                         @end="End"
                                         @start="onStart"
-                                        :move="onMove">
+                                        :move="onMove"
+                                        :style='{backgroundColor: task.lists[key].color}'>
                                         
                                         <div :id="s._id" class="item-task list-group-item handle" v-for="s in i.things">
                                             

@@ -21,6 +21,7 @@
 
 .dragArea {
     min-height: 50px;
+    background-color: rgb(52, 73, 94);
 }
 
 
@@ -34,7 +35,7 @@
     }
         .title-head-tb {
             height: 40px;
-            width: 250px;
+            width: 240px;
             /* background-color: white; */
             display: flex;
             justify-content: center;
@@ -58,7 +59,7 @@
         margin: 0;
     }
         .task-table {
-            width: 250px;
+            width: 240px;
             min-height: 100px;
             background-color: white;
             display: flex;
@@ -72,7 +73,10 @@
 /**** Item (tarea) dentro de las secciones del taskboard ****/
 .item-task {
     min-height: 40px;
-    margin: 10px 9px 0 8px;
+    /* margin: 10px 9px 0 8px; */
+
+    margin: 0 9px 10px 8px;
+
     box-shadow: 0 0 1px white;
     border-radius: 0.27rem;
     display: flex;
@@ -174,14 +178,57 @@
 */
 
 .title-head-tb {
-    background-color: #00d8d6;
+    background-color: rgb(52, 73, 94);
 
     border-radius: 10px 10px 0 0;
 }
 
 .task-table {
-    background-color: #00d8d6;
+    /* background-color: rgb(52, 73, 94); */
 
     padding-bottom: 10px;
     border-radius: 0 0 10px 10px;
+}
+
+.dragArea {
+    padding: 10px 0;
+    border-radius: 0 0 10px 10px;
+    max-height: 435px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+/* SCROLL POR TAREAS */
+
+.dragArea:hover{
+    overflow-y: auto;
+}
+.dragArea::-webkit-scrollbar {
+    width: 4px;
+    position: absolute;
+    right: 0;
+    float: right;
+    opacity: 0;
+}
+.dragArea::-webkit-scrollbar-track {
+    background: #ddd;
+}
+.dragArea::-webkit-scrollbar-thumb {
+    background: #a0bcd4; 
+}
+
+/**************** Scrollbar task board *******************/
+#todo-board:hover{
+    overflow-x: auto;
+}
+#todo-board::-webkit-scrollbar {
+    height: 10px;
+    position: absolute;
+    opacity: 0;
+}
+#todo-board::-webkit-scrollbar-track {
+    background: #ddd;
+}
+#todo-board::-webkit-scrollbar-thumb {
+    background: #a0bcd4; 
 }
