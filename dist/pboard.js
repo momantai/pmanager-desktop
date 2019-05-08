@@ -4,17 +4,21 @@
 
 socket.on('message', (msg) => {
 	console.log("Se ha recibido un mensaje.")
-	console.log(msg)
-	if (msg.typeAction == 'changeStatus') {
-		tb.changeStatus(msg)
-	} else if (msg.typeAction == 'deleteTask') {
-		tb.deleteTask(msg)
-	} else if (msg.typeAction == 'title') {
-		tb.applyedit(msg)
-	} else if(msg.typeAction == 'newlist'){
-		tb.addnewlist(msg)
-	} else {
-		tb.addTask(msg)
+	console.log(msg.typeAction)
+	if (msg.isproject == tb.dataconf.project) {
+		if (msg.typeAction == 'changeStatus') {
+			tb.changeStatus(msg)
+		} else if (msg.typeAction == 'deleteTask') {
+			tb.deleteTask(msg)
+		} else if (msg.typeAction == 'title') {
+			tb.applyedit(msg)
+		} else if (msg.typeAction == 'newlist') {
+			tb.addnewlist(msg)
+		} else if (msg.typeAction == 'movetolist') {
+			tb.movetask(msg)
+		} else {
+			tb.addTask(msg)
+		}
 	}
 })
 
@@ -39,7 +43,7 @@ let tb = new Vue({
 		statustem: "backlog",
 		tagsItem: [],
 		taskdetails: [],
-		taskresources:[],
+		taskresources: [],
 		tagOpt: '',
 		opt: {
 			'titleEdit': false,
@@ -98,6 +102,21 @@ let tb = new Vue({
 				}
 			}
 		},
+		movetask: function (mt) {
+			index = parseInt(mt.index)
+			futureIndex = parseInt(mt.futureIndex)
+
+			try {
+				tasktask = this.task.liststodo[this.status[mt.init]].things[index]
+
+				if (tasktask._id == mt.element) {
+					this.task.liststodo[this.status[mt.init]].things.splice(index, 1)
+					this.task.liststodo[this.status[mt.final]].things.splice(futureIndex, 0, tasktask)
+				}
+			} catch (error) {
+				console.log(error)
+			}
+		},
 		filterTag: function (tag) { // Para filtrar por etiquetas.
 			let temp = []
 			this.tagOpt = tag
@@ -109,9 +128,9 @@ let tb = new Vue({
 			this.temptask = temp
 			delete temp
 		},
-		tastap: function(){
+		tastap: function () {
 			this.status = {}
-			for(i = 0, j = this.task.lists.length; i<j; i++) {
+			for (i = 0, j = this.task.lists.length; i < j; i++) {
 				this.status[this.task.lists[i]._id] = i
 			}
 		},
@@ -119,7 +138,7 @@ let tb = new Vue({
 		/******************************************************************
 			Area de tareas de un projecto.
 		*/
-		newTask: function() { /* Función para crear nueva tarea. */
+		newTask: function () { /* Función para crear nueva tarea. */
 			if (this.titleItem.trim() != '') {
 				axios.post(urltask, qstring.stringify({
 					'name': this.titleItem,
@@ -133,7 +152,7 @@ let tb = new Vue({
 				this.tagsItem = [];
 			}
 		},
-		addTask: function(add) {
+		addTask: function (add) {
 			if (add.name != "") {
 				this.task.liststodo[this.status[add.status]].things.push({
 					_id: add._id,
@@ -179,7 +198,7 @@ let tb = new Vue({
 		/******************************************************************
 			Area de listas o estados que contienen a las tareas.
 		*/
-		newlist: function() {
+		newlist: function () {
 			urlnewlist = url + '/api/' + this.dataconf.user + '/' + this.dataconf.project + '/l'
 			this.namenewlist
 			axios.post(urlnewlist, qstring.stringify({
@@ -187,14 +206,14 @@ let tb = new Vue({
 				'action': 'newlist'
 			}))
 		},
-		addnewlist: function(nl){
-			this.task.lists.push({'_id': nl._id, 'td':nl.td, 'color':nl.color})
-			this.task.liststodo.push({'things': [], '_thingstoid': nl._id})
+		addnewlist: function (nl) {
+			this.task.lists.push({ '_id': nl._id, 'td': nl.td, 'color': nl.color })
+			this.task.liststodo.push({ 'things': [], '_thingstoid': nl._id })
 			this.status[nl._id] = Object.keys(this.status).length
 		},
-		applyedit: function(edit) {
-			for(i = 0, j = this.task.liststodo[this.status[edit.sta]].things.length; i<j; i++) {
-				if(this.task.liststodo[this.status[edit.sta]].things[i]._id == edit._id) {
+		applyedit: function (edit) {
+			for (i = 0, j = this.task.liststodo[this.status[edit.sta]].things.length; i < j; i++) {
+				if (this.task.liststodo[this.status[edit.sta]].things[i]._id == edit._id) {
 					this.task.liststodo[this.status[edit.sta]].things[i].name = edit.name
 					break
 				}
@@ -238,11 +257,11 @@ let tb = new Vue({
 
 			if (_id != "") {
 				axios.get(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + _id)
-					.then((r) =>{
+					.then((r) => {
 						this.taskdetails = r.data.things
 						this.taskresources = r.data.resource
 					})
-					//.then(response => (tb.taskInfo = response.data.task[0]))
+				//.then(response => (tb.taskInfo = response.data.task[0]))
 			}
 		},
 
@@ -328,7 +347,7 @@ let tb = new Vue({
 		},
 		checkTodo: function (id) {
 			checkoption = ''
-			if(this.taskresources.todo[id].check == '') {
+			if (this.taskresources.todo[id].check == '') {
 				checkoption = 'check'
 			}
 

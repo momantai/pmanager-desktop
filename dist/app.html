@@ -282,27 +282,32 @@
                                     {{i.td}}
                                 </div>
                                 <div class="icon-more-area">
-                                    <button class="icon more" id="moreItemid" 
+
+                                    <button class="icon more" id="moreItemid" @click='statustem=i._id'></button>
+
+                                    <!-- <button class="icon more" id="moreItemid" 
                                         @click="newItemE(i._id)"
                                         title="Tarea nueva">
-                                    </button>
+                                    </button> -->
+
                                     <div class="boxnewtask">
                                         <div class="inputnewtask">
-                                            <input type="text" placeholder="Escribe una nueva tarea..">
+                                            <input class="inputnt" @keyup.13='newTask' @keyup.esc='titleItem=""' v-model='titleItem' type="text" placeholder="Escribe una nueva tarea..">
                                         </div>
                                         <div class="cancelnewtask">
-                                            <a href="#">Cancelar</a>
+                                            <a href="#" @click='titleItem=""'>Cancelar</a>
                                         </div>
                                     </div>
+                                    
                                 </div>
                             </div>
                             </div>
 
                             <!-- Input para crear una nueva lista de tareas. -->
-                            <div class="title-head-tb" :style='{backgroundColor:"red"}'>
+                            <div class="title-head-tb newlistinput">
                                 <input type="text" placeholder="Nueva lista +" 
                                     @keyup.13="newlist" 
-                                    v-model="namenewlist">
+                                    v-model="namenewlist" class='inputnewlist'>
                             </div>
                         </div>
 

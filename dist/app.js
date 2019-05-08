@@ -70,10 +70,10 @@ let vp = new Vue({
                 axios.put(url + '/api/projects/' + 'momantai', data)
                     .then((response) => {
                         r = response.data
-                        if (r.ok != 'ok') {
+                        if (/*r.ok*/'ok' != 'ok') {
                             alert('¡Ya tienes un proyecto\ncon ese identificador!')
                         } else {
-                            this.dataps.push({ 'leader': 'momantai', 'task': [], 'project_id': this.idpm, 'title': nt.value })
+                            this.dataps.push({ 'leader': r.leader, 'task': [], 'project_id': r.project_id, 'title': r.title })
                             alert('¡Tienes un nuevo proyecto!')
                             nt.value = ''
                             this.idpm = ''
