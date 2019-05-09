@@ -26,13 +26,13 @@
                         </div>
                         <div class="data-project">
                             <div class="form">
-                                <input class="formcp" id="NUEVOTITULO" type="text" placeholder="Nuevo título" />
-                                <div>
+                                <input class="formcp" id="NUEVOTITULO" type="text" placeholder="Título de tu nuevo proyecto" />
+                                <!-- <div>
                                     <label>momantai</label>
                                     <input class="formcp" type="text" v-model="idpm" v-bind:value="clean"
                                         placeholder="id-ejemplo-proyecto"
                                         title="¡Haz que compartir tu proyecto sea más fácil!" />
-                                </div>
+                                </div> -->
                                 <div class="opt-form"><span class="btn-create" @click="wCreate">Crear</span><span
                                         class="btn-cancel" @click="modalCreate">Cancelar</span></div>
                             </div>
@@ -57,13 +57,24 @@
                     </div>
                 </div>
                 <div id="box-content">
+                        <div id="rboption-between-members-projects">
+                                <form action="">
+                                    <input type="radio" name="rbmember" id="rbproject" checked>
+                                    <label for="rbproject" class="rb-option-home">Proyectos</label>
+                                    <input type="radio" name="rbmember" id="rbmember">
+                                    <label for="rbmember" class="rb-option-home">Miembros</label>
+                                </form>
+                            </div>
+
                     <div class="show-proyects">
+
                         <div class="box-topshowproyect">
                             <div class="search">
                                 <input class="search-input" type="text" name="search" placeholder="Buscar.." />
                             </div>
                             <!-- <div class="settings"></div> -->
                             <div class="box-settings">
+                                <p style='color: slategrey;'>Bienvenido <span style='color: #2893ff;'>Alexis</span>!</p>
                                 <button class="settings"></button>
                                 <div class="menu-settings">
                                     <ul>
@@ -76,15 +87,7 @@
                             
                         </div>
                         <div class="showbox">
-                            <div id="rboption-between-members-projects">
-                                <form action="">
-                                    <input type="radio" name="rbmember" id="rbproject" checked>
-                                    <label for="rbproject" class="rb-option-home">Proyectos</label>
-                                    <input type="radio" name="rbmember" id="rbmember">
-                                    <label for="rbmember" class="rb-option-home">Miembros</label>
-                                </form>
-                                
-                            </div>
+                            
                             <div class="contenedordetodo">
                                 <div class="proyect-preview" v-for="pv in dataps">
                                     <div class="title-p"><a
@@ -94,12 +97,9 @@
                                             <p style="cursor: pointer" @click="opentaskboard(pv.leader, pv.project_id)">
                                                     {{pv.title}}</p>
                                     </div>
-                                    <div class="bottom-p-preview">
+                                    <!-- <div class="bottom-p-preview">
                                         <div class="option-p-preview">
                                             <div class="op-icon task-icon"></div>
-                                            <!-- <div class="op-option"><a
-                                                    @click="enterProject(pv.owner, pv.proyect_id)">{{pv.task.length}}
-                                                    Tareas</a></div> -->
                                         </div>
                                         <div class="option-p-preview">
                                             <div class="op-icon members-icon"></div>
@@ -110,7 +110,7 @@
                                             <div class="op-option"><a
                                                     @click="selectProject(pv.leader, pv.project_id)">Editar</a></div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -129,7 +129,7 @@
     -->
     <!-- Vista del taskboad MOSTRAR/OCUTAR -->
 
-    <div id="contentboard" style="display: block">
+    <div id="contentboard" style="display: none">
         <div class="box-topshowproyect">
             <div class="search">
                 <div class="back"></div>

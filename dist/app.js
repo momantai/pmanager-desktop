@@ -55,7 +55,7 @@ let vp = new Vue({
             this.idpm = ''
             mC = document.getElementById('modal-c-p')
             mC.classList.toggle('hidden')
-
+            document.getElementById('NUEVOTITULO').focus()
         },
         wCreate: function () {
             nt = document.getElementById('NUEVOTITULO')
