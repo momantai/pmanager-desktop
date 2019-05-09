@@ -308,7 +308,7 @@
 		height: 75px;
 		overflow: hidden;
 		text-align: center;
-		font-weight: bolder;
+		/* font-weight: bolder; */
 		color: rgb(61,70,79);
 	}
 
@@ -563,3 +563,26 @@
 		padding: 15px;
 		margin: 5px;
 	}
+
+
+
+/***************************************************
+	Members of project
+*/
+
+.membersofproject {
+	width: 210px;
+}
+
+	.membersop {
+		width: 100%;
+	}
+		.memberop{
+			background-color: white;
+			box-shadow: 0 0 0 1px #9ca6af;
+			height: 22px;
+			width: 	22px;
+			border-radius: 50px;
+			display: inline-flex;
+			margin: -5px;
+		}
