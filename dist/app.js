@@ -60,12 +60,12 @@ let vp = new Vue({
         wCreate: function () {
             nt = document.getElementById('NUEVOTITULO')
 
-            if (nt.value == 0 || this.idpm == 0) {
+            if (nt.value == 0 /*|| this.idpm == 0*/) {
                 alert('¡Llena todos los campos!')
             } else {
                 data = qstring.stringify({
                     title: nt.value,
-                    _id: this.idpm
+                    //_id: this.idpm
                 })
                 axios.put(url + '/api/projects/' + 'momantai', data)
                     .then((response) => {
@@ -76,7 +76,7 @@ let vp = new Vue({
                             this.dataps.push({ 'leader': r.leader, 'task': [], 'project_id': r.project_id, 'title': r.title })
                             alert('¡Tienes un nuevo proyecto!')
                             nt.value = ''
-                            this.idpm = ''
+                            //this.idpm = ''
                             this.modalCreate()
                         }
                     })

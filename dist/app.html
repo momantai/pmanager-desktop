@@ -90,13 +90,32 @@
                             
                             <div class="contenedordetodo">
                                 <div class="proyect-preview" v-for="pv in dataps">
-                                    <div class="title-p"><a
-                                            :href="'https://www.pmanagerd.bluemix.net/'+pv.owner+'/'+pv.project_id"></a>
+                                    <div class="top-project-preview" style="cursor: pointer" @click="opentaskboard(pv.leader, pv.project_id)">
+                                        <div class="title-preview">
+                                            <h4>{{pv.title}}</h4>
+                                        </div>
+                                        <div class="details-preview">
+                                            <p>Este es un proyecto basado en herramientas de organización.</p>
+                                        </div>
+                                    </div>
+                                    <div class="bottom-project-preview">
+                                        <div class="membersofproject">
+                                            <div class="membersop">
+                                                <div v-for='mmbrs in pv.team' :style='{backgroundImage: "url(http://0.0.0.0:5000/static/img/persona2.png)"}' class="memberop" :title="mmbrs.first_name">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="action-edit-project-preview">
+                                            <!-- <a href="#">Editar</a> -->
+                                        </div>
+                                    </div>
+                                    <!-- <div class="title-p"> -->
+                                        <!-- <a :href="'https://www.pmanagerd.bluemix.net/'+pv.owner+'/'+pv.project_id"></a> -->
                                         <!-- <p style="cursor: pointer" @click="enterProject(pv.owner, pv.proyect_id)">
                                             {{pv.title}}</p> -->
-                                            <p style="cursor: pointer" @click="opentaskboard(pv.leader, pv.project_id)">
+                                            <!-- <p style="cursor: pointer" @click="opentaskboard(pv.leader, pv.project_id)">
                                                     {{pv.title}}</p>
-                                    </div>
+                                    </div> -->
                                     <!-- <div class="bottom-p-preview">
                                         <div class="option-p-preview">
                                             <div class="op-icon task-icon"></div>
@@ -112,7 +131,7 @@
                                         </div>
                                     </div> -->
 
-                                    <div class="membersofproject">
+                                    <!-- <div class="membersofproject">
                                         <div class="membersop">
                                             <div class="memberop">
 
@@ -124,7 +143,7 @@
                                                 
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
                             </div>
                         </div>
