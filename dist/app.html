@@ -95,13 +95,13 @@
                                             <h4>{{pv.title}}</h4>
                                         </div>
                                         <div class="details-preview">
-                                            <p>Este es un proyecto basado en herramientas de organización.</p>
+                                            <p>{{pv.details}}</p>
                                         </div>
                                     </div>
                                     <div class="bottom-project-preview">
                                         <div class="membersofproject">
                                             <div class="membersop">
-                                                <div v-for='mmbrs in pv.team' :style='{backgroundImage: "url(http://0.0.0.0:5000/static/img/persona2.png)"}' class="memberop" :title="mmbrs.first_name">
+                                                <div v-for='mmbrs in pv.team' :style='{backgroundImage: "url(http://0.0.0.0:5000/static/img/"+ mmbrs.imgprofile.small +")"}' class="memberop" :title="mmbrs.first_name">
                                                 </div>
                                             </div>
                                         </div>
