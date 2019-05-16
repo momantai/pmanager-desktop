@@ -212,14 +212,18 @@
 
 /* SCROLL POR TAREAS */
 
+.dragArea {
+    overflow: hidden;
+}
+
 .dragArea:hover{
-    overflow-y: auto;
+    overflow-y: overlay;
 }
 .dragArea::-webkit-scrollbar {
     width: 4px;
     position: absolute;
     right: 0;
-    float: right;
+    /* float: right; */
     opacity: 0;
 }
 .dragArea::-webkit-scrollbar-track {

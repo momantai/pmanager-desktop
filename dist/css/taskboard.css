@@ -71,7 +71,7 @@
 
 /*************** SCROLL Visual todo board ****************/
     .task-table:hover{
-        overflow-y: auto;
+        overflow-y: overlay;
     }
     .task-table::-webkit-scrollbar {
         width: 10px;

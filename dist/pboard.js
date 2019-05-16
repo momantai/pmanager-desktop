@@ -182,8 +182,17 @@ let tb = new Vue({
 				action: 'title',
 				sta: this.statustask
 			}))
-
-			this.task[this.index[this.taskdetails._id]].work = this.taskdetails.name
+			data = this.task.liststodo[this.status[this.statustask]].things
+			lentab = data.length
+			for (i = 0; i<lentab; i++) {
+				console.log(i)
+				if(data[i]._id == this.taskdetails._id) {
+					console.log(i)
+					this.task.liststodo[this.status[this.statustask]].things[i].name = this.taskdetails.name
+				}
+			} 
+			
+			//= this.taskdetails.name
 		},
 		newdetailstask: function () {
 			d = document.getElementById('textDescription')
