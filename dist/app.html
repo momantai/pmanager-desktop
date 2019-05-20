@@ -36,7 +36,26 @@
                     </div>
                 </div>
                 
-                <div class="modal " id="modal-p">
+                <div class="modal hidden" id="modal-d-p">
+                    <div class="backg-modal" @click="modalDelete"></div>
+                    <div class="boxModal" id="modalcProject">
+                        <div class="titleModal">
+                            <p class="title">¿Realmente desea eliminar este proyecto?</p>
+                        </div>
+                        <div class="data-project">
+                            <p>Escribe <strong>{{detailsproject.leader}}</strong> para continuar</p>
+                            <div class="form">
+                                <input class="formcp" v-model='delete_project_accept' type="text" placeholder="Título de tu nuevo proyecto" />
+                                <div class="opt-form">
+                                    <span class="btn-create" @click="deleteProject">Eliminar</span>
+                                    <span class="btn-cancel" @click="modalDelete">Cancelar</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal hidden" id="modal-p">
                     <div class="backg-modal" @click="modal"></div>
                     <div class="boxModal" id="modalProject">
                         <div class="titleModal">
@@ -173,7 +192,7 @@
                                             <ul>
                                                 <li @click="opentaskboard(pv.leader, pv.project_id)">Ver</li>
                                                 <li @click="selectProject(pv.leader, pv.project_id, pv)">Editar</li>
-                                                <li class='delete-letter'>Eliminar</li>
+                                                <li @click="modalDelete(), detailsproject._id = pv.project_id, detailsproject.leader = pv.leader" class='delete-letter'>Eliminar</li>
                                             </ul>
                                         </div>
                                     </div>

@@ -26,7 +26,8 @@ let vp = new Vue({
             leader: '',
         },
         textforsearch: '',
-        resultusers: []
+        resultusers: [],
+        delete_project_accept: ''
     },
     computed: {
         clean() {
@@ -69,6 +70,11 @@ let vp = new Vue({
             mC = document.getElementById('modal-c-p')
             mC.classList.toggle('hidden')
             document.getElementById('NUEVOTITULO').focus()
+        },
+        modalDelete: function() {
+            mdp = document.getElementById('modal-d-p')
+            mdp .classList.toggle('hidden')
+            this.delete_project_accept = ''
         },
         wCreate: function () {
             nt = document.getElementById('NUEVOTITULO')
@@ -212,15 +218,21 @@ let vp = new Vue({
         consolelogo: function() {
             console.log('Cancelar')
         },
-        test: function() {
-            data = qstring.stringify({
-                type: 'deleteProject',
-                sure: true
-            })
-            axios.put(url + '/api/project/momantai/506e687b-f1cb-4730-9ede-74ef164e328c', data)
-                .then((response) => {
-                    console.log(response.data)
+        deleteProject: function() {
+            if (this.delete_project_accept == this.detailsproject.leader) {
+                data = qstring.stringify({
+                    type: 'deleteProject',
+                    sure: true
                 })
+
+                axios.put(url + '/api/project/'+ this.detailsproject.leader +'/' + this.detailsproject._id, data)
+                    .then((response) => {
+                        console.log(response.data)
+                        this.modalDelete()
+                    })
+            } else {
+                alert('No se ha podido eliminar.')
+            }
         },
         testdos: function() {
             data = qstring.stringify({
