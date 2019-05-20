@@ -11,18 +11,123 @@
 #pviews {
 	width: 100%;
 }
-	
+
+/*			Ventana Modal Editando Proyecto				*/
+
 	#modalProject {
-		width: 450px;
-		height: 295px;
+		width: 500px;
+		height: 450px;
 	}
 		.data-project {
+			padding: 0 15px;
 			padding-top: 20px;
 			width: 450px;
     		height: 420px;
-    		margin: 0 auto;
-    		/*box-shadow: 0 0 0 1px #ccc;*/
+			margin: 0 auto;
 		}
+			.data-project p {
+				font-size: 0.8em;
+			}
+
+		.content-editable {
+			outline: none;
+			border-radius: 0;
+			border: none;
+			background-color: #fff;
+			box-shadow: 0 1px 0 0 #ccc;
+			width: 250px;
+		}
+		textarea.content-editable {
+			resize: none;
+			min-height: 10px;
+		}
+		.content-editable[type='text']:disabled, textarea:disabled {
+			box-shadow: none;
+		}
+		a span {
+			color: #0a84ff;
+			font-size:0.9em;
+		}
+		a span:hover {
+			text-decoration: underline;
+		}
+
+		.collaborators {
+			width: 100%;
+			margin-top: 15px;
+			/* box-shadow: 0 0 0 1px #ccc; */
+			/* padding: 0 15px 15px; */
+			height: 175px;
+		}
+			.collaborator {
+				height: 35px;
+				/* background-color: whitesmoke; */
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+				padding: 0 10px;
+			}
+				.img-collaborator {
+					height: 30px;
+					width: 30px;
+					border-radius: 50%;
+					background-image: url('https://pmanagerd.mybluemix.net/static/img/matthew.png');
+					background-size: 100%;
+					background-repeat: no-repeat;
+				}
+				.name-collaborator {
+					width: 325px;
+				}
+				.delete-collaborator {
+					height: 30px;
+					width: 30px;
+				}
+
+					.input-search-collaborator {
+						outline: none;
+						border: none;
+						width: 285px;
+						box-shadow: 0 0 0 1px whitesmoke;
+						background-color: whitesmoke;
+						margin: 5px 0 0 15px;
+					}
+						.input-search-collaborator:focus {
+							background-color: white;
+						}
+				
+				.add-collaborator {
+					position: relative;
+				}
+				.results-users {
+					width: 285px;
+					max-height: 160px;
+					background-color: white;
+					box-shadow: 1px 0 5px 1px rgb(204, 204, 204);
+					position: absolute;
+					left: 15px;
+					top: 47px;
+				}
+					.items-resultuser {
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						padding: 5px;
+						font-size: 0.8em;
+					}
+						.items-resultuser:hover{
+							background-color:#0a84ff;
+						}
+							.items-resultuser:hover .invite-resultuser {
+								color: white;
+							}
+								.invite-resultuser:hover {
+									text-decoration: underline;
+									cursor: pointer;
+								}
+
+
+
+
 			.form {
 				width: 380px;
 				margin: 0 auto;
@@ -62,21 +167,17 @@
 		  				content: 'Descripción';
 					}
 
-				.collaborators {
-					width: 320px;
-					margin-top: 15px;
-					box-shadow: 0 0 0 1px #ccc;
-					padding: 0 15px 15px;
-				}
 					.collist {
 						padding-left: 10px;
 						color: grey;
 						font-size: 0.8em;
 					}
 
-				.collaborator {
+				/* .collaborator {
 					width: 200px;
-				}
+				} */
+
+/*						***						*/
 
 #box-content {
 	width: 100%;
@@ -312,8 +413,8 @@
 					/* background-color: #26d0ce; */
 					/* background-color: #26d0ce; */
 					/* background-color: rgb(40, 147, 255); */
-					background-color: whitesmoke;
-					color: #FFF;
+					background-color: #00a1ff;
+					color: #fff;
 					cursor: pointer;
 				}
 					.menu-settings:hover {
@@ -630,10 +731,49 @@
 	justify-content: space-between;
 }
 
-	.action-edit-project-preview a {
+/*		 Menu de los Items de proyecetos		*/
+
+	.action-edit-project-preview {
+		display: none;
 		color: #3D464F;
 		text-decoration: none;
 		font-size: 0.8em;
+		position: absolute;
+		width: 15px;
+		height: 15px;
+		
+		right: 15px;
+		top: 10px;
+		/* background-image: url('img/more-icon.svg'); */
+		background-size: 100%;
+	}
+		.action-edit {
+			background: none;
+			border: none;
+			background-image: url('img/more-icon.svg');
+			background-repeat: no-repeat;
+			background-size: 100%;
+			width: 15px;
+			height: 15px;
+			padding: 5px;
+			outline: none;
+		}
+		.menu-action-edit {
+			top: 5px;
+			right: 15px;
+		}
+		.action-edit:focus + .menu-action-edit {
+			display: block;
+		}
+		.action-edit:focus + .action-edit-project-preview {
+			display: block;
+		}
+	.proyect-preview:hover > .action-edit-project-preview {
+		display:block;
+	}
+
+	.delete-letter {
+		color: red;
 	}
 
 .membersofproject {

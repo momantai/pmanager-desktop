@@ -23,7 +23,10 @@ socket.on('message', (msg) => {
 })
 
 axios.get(urltask)
-	.then(response => (tb.task = response.data))
+	.then((response) => {
+		tb.task = response.data
+		tb.loading = false
+	})
 
 let tb = new Vue({
 	el: '#main',
@@ -69,7 +72,8 @@ let tb = new Vue({
 			final: '',
 			index: 0,
 			futureIndex: 0
-		}
+		},
+		loading: true
 	},
 	methods: { // indexPosition para saber el indice de un estado.
 

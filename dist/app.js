@@ -2,6 +2,7 @@ axios.get(url + '/api/projects/momantai')
     .then((response) => {
         vp.dataps = response.data
         console.log(response.data)
+        vp.loading = false
     })
     .catch((error) => {
         console.log('Erroooooooor!')
@@ -13,7 +14,19 @@ let vp = new Vue({
     data: {
         dataps: [],
         datap: {},
-        idpm: 'Hola'
+        idpm: 'Hola',
+        loading: true,
+        editprojectopt: {
+            name: true,
+            details: true,
+            collaborator: true
+        },
+        detailsproject: {
+            _id: '',
+            leader: '',
+        },
+        textforsearch: '',
+        resultusers: []
     },
     computed: {
         clean() {
@@ -82,11 +95,16 @@ let vp = new Vue({
                     })
             }
         },
-        selectProject: function (owner, id) {
+        selectProject: function (owner, id, data) {
+            this.modal()
+            this.datap = data
             axios.get(url + '/api/project/' + owner + '/' + id)
                 .then((response) => {
-                    this.modal()
                     this.datap = response.data
+                    this.detailsproject = {
+                        leader: owner,
+                        _id: id
+                    }
                 })
                 .catch((error) => {
 
@@ -137,32 +155,48 @@ let vp = new Vue({
             a = document.getElementById('alertt')
             a.classList.toggle('displayhidden');
         },
-        addCollaborator: function () {
-            c = document.getElementById('elcollabora')
-            console.log(c)
+        searchinTap: function() {
+            text = this.textforsearch.trim()
+            console.log(text)
+            if(text.length >= 3) {
+                axios.get(url + '/api/search-user/' + text)
+                    .then((response) => {
+                        this.resultusers = response.data
+                        console.log(response)
+                    })
+            } else {
+                this.resultusers = []
+            }
+        },
+        inviteCollaborator: function(usertoInvite){
+            console.log(usertoInvite.user)
+
             data = qstring.stringify({
-                collaborator: c.value,
+                collaborator: usertoInvite.user,
                 type: 'addcoll'
             })
 
-            axios.put(url + '/api/project/' + this.datap.owner + '/' + this.datap.proyect_id, data)
+            axios.put(url + '/api/project/' + this.detailsproject.leader + '/' + this.detailsproject._id, data)
                 .then((response) => {
                     if (response.data.ok == 'ok') {
-                        this.datap.collaborators.push(c.value)
-                        c.value = ''
+                        this.datap.team.push(usertoInvite)
                     } else if (response.data.ok == 'UenP') {
-                        alert('Usuario esta trabajando en el proyecto.')
+                        alert('Ya es colaborador.')
                     } else {
-                        alert('¡El usuario no existe aún!\nCuentale a un amigo de Pmanager.')
+                        alert('¡Este usuario no existe.')
                     }
                 })
         },
         opentaskboard: function(user, project) {
+            tb.loading = true;
+            wboard.style.display = "block";
+            
             axios.get(url + '/api/' + user + '/' + project + '/task')
                 .then(response => {
                     (tb.task = response.data)
                     tb.dataconf = {'user': user, 'project': project}
                     tb.tastap()
+                    tb.loading = false
                 })
                 
                 console.log(tb.task)
@@ -170,7 +204,34 @@ let vp = new Vue({
                 pdataident = [user, project]
                 urltask = url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/task'
 
-                wboard.style.display = "block";
+                // wboard.style.display = "block";
+        },
+        consolelog: function() {
+            console.log('Guardar')
+        },
+        consolelogo: function() {
+            console.log('Cancelar')
+        },
+        test: function() {
+            data = qstring.stringify({
+                type: 'deleteProject',
+                sure: true
+            })
+            axios.put(url + '/api/project/momantai/506e687b-f1cb-4730-9ede-74ef164e328c', data)
+                .then((response) => {
+                    console.log(response.data)
+                })
+        },
+        testdos: function() {
+            data = qstring.stringify({
+                list: "055cfc36-cda8-455a-ab3a-e912cdf2901b",
+                _id: "a7c28714-be36-4205-a52f-071e3972277e",
+                typeAction: 'deleteTask'
+            })
+            axios.put(url + '/api/momantai/506e687b-f1cb-4730-9ede-74ef164e328c/task', data)
+                .then((response) => {
+                    console.log(response.data)
+                })
         }
 
     }

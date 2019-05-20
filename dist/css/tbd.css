@@ -183,6 +183,17 @@
             border: none;
             border-radius: 50px;
         }
+    
+        .namelistinput {
+            background: none;
+            color: #FFF;
+            border: 0;
+            border-radius: 0;
+            outline: none;
+        }
+            .namelistinput:focus {
+                box-shadow: 0 1px 0 0 #fff;
+            }
 
 
 /*************************************************

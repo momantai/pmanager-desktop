@@ -17,7 +17,7 @@ console.log("¡Iniciando aplicación!")
     Configuration.
 */
 
-//let url = 'https://pmanagerd.mybluemix.net'
+// let url = 'https://pmanagerd.mybluemix.net'
 let url = 'http://0.0.0.0:5009'
 //let url = 'http://www.cloudmomantai.ml'
 

@@ -27,35 +27,108 @@
                         <div class="data-project">
                             <div class="form">
                                 <input class="formcp" id="NUEVOTITULO" type="text" placeholder="Título de tu nuevo proyecto" />
-                                <!-- <div>
-                                    <label>momantai</label>
-                                    <input class="formcp" type="text" v-model="idpm" v-bind:value="clean"
-                                        placeholder="id-ejemplo-proyecto"
-                                        title="¡Haz que compartir tu proyecto sea más fácil!" />
-                                </div> -->
-                                <div class="opt-form"><span class="btn-create" @click="wCreate">Crear</span><span
-                                        class="btn-cancel" @click="modalCreate">Cancelar</span></div>
+                                <div class="opt-form">
+                                    <span class="btn-create" @click="wCreate">Crear</span>
+                                    <span class="btn-cancel" @click="modalCreate">Cancelar</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="modal hidden" id="modal-p">
+                
+                <div class="modal " id="modal-p">
                     <div class="backg-modal" @click="modal"></div>
                     <div class="boxModal" id="modalProject">
                         <div class="titleModal">
                             <p class="title">Editando información de proyecto</p>
                         </div>
+
                         <div class="data-project">
-                            <div class="form">
-                                <input class="formp" id="TITLE" type="text" @blur="updateTitle"
-                                    v-bind:value="datap.title" placeholder="Título" />
-                                <div class="formp" id="DESCRIPTION" @blur="updateDescription"
-                                    data-placeholder="Descripción" contenteditable="true">{{datap.details}}</div>
-                                <label class="formp">{{datap.project_id}}</label>
+                            <div class="data-project-info">
+                                <p>Título
+                                    <a @click='editprojectopt.name = false' v-if='editprojectopt.name'>
+                                        <span>Editar</span>
+                                    </a>
+                                    <a @click='editprojectopt.name = true' v-else>
+                                        <span @click='consolelog'>Guardar</span>
+                                        <span @click="consolelogo">Descartar</span>
+                                    </a>
+                                </p>
+                                <input class="content-editable" type="text" v-model='datap.title' :disabled="editprojectopt.name">
+                                 <p>Detalles
+                                    <a @click='editprojectopt.details = false' v-if='editprojectopt.details'>
+                                        <span>Editar</span>
+                                    </a>
+                                    <a @click='editprojectopt.details = true' v-else>
+                                        <span @click='consolelog'>Guardar</span>
+                                        <span @click="consolelogo">Descartar</span>
+                                    </a>
+                                </p>
+                                <input class="content-editable" type="text" v-model='datap.details' :disabled="editprojectopt.details">
+                            </div>
+
+                            <div class="data-project-collaborators">
+                                <p>Colaboradores
+                                    <a @click='editprojectopt.collaborator = false' v-if='editprojectopt.collaborator'>
+                                        <span>Agregar colaborador</span>
+                                    </a>
+                                    <a @click='editprojectopt.collaborator = true' v-else>
+                                        <span @click='textforsearch = "", resultusers = []'>Terminar</span>
+                                    </a>
+                                </p>
+
+                                <div class="add-collaborator" v-if='!editprojectopt.collaborator'>
+                                    <input @keyup="searchinTap" @keyup.esc='textforsearch = ""' v-model="textforsearch"  class="input-search-collaborator" type="text" placeholder="Busca por el nombre de un usuario">
+                                    <div class="results-users" v-if='resultusers.length'>
+                                        <ul>
+                                            <li v-for="r in resultusers" class="items-resultuser">
+                                                <div class="name-resultuser">
+                                                    {{r.first_name}} {{r.last_name}}
+                                                </div>
+                                                <div class="invite-resultuser" @click='inviteCollaborator(r)'>
+                                                    Invitar
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="collaborators">
+                                    <ul>
+                                        <li v-for='collaboratorItem in datap.team'>
+                                            <div class="collaborator">
+                                                <div class="img-collaborator" :style='{backgroundImage: "url(https://pmanagerd.mybluemix.net/static/img/"+ collaboratorItem.imgprofile.small +")"}'></div>
+                                                <div class="name-collaborator">
+                                                    {{collaboratorItem.first_name}} {{collaboratorItem.last_name}}
+                                                </div>
+                                                <div class="delete-collaborator"></div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
+
+                        <!-- <div class="data-project">
+                            <div class="form">
+                                <input class="formp" id="TITLE" type="text" 
+                                    @blur="updateTitle"
+                                    v-bind:value="datap.title" 
+                                    placeholder="Título" />
+
+                                <div class="formp" id="DESCRIPTION" 
+                                    @blur="updateDescription"
+                                    data-placeholder="Descripción" 
+                                    contenteditable="true">
+                                        {{datap.details}}
+                                </div>
+
+                                <label class="formp">{{datap.project_id}}</label>
+                            </div>
+                        </div> -->
                     </div>
                 </div>
+
                 <div id="box-content">
                         <div id="rboption-between-members-projects">
                                 <form action="">
@@ -67,6 +140,10 @@
                             </div>
 
                     <div class="show-proyects">
+
+                            <div class="loading" v-if='loading'>
+                                <img src="css/img/loading.gif" alt="" srcset="">
+                            </div>
 
                         <div class="box-topshowproyect">
                             <div class="search">
@@ -90,6 +167,16 @@
                             
                             <div class="contenedordetodo">
                                 <div class="proyect-preview" v-for="pv in dataps">
+                                    <div class="action-edit-project-preview">
+                                        <button class="action-edit"></button>
+                                        <div class="menu-settings menu-action-edit">
+                                            <ul>
+                                                <li @click="opentaskboard(pv.leader, pv.project_id)">Ver</li>
+                                                <li @click="selectProject(pv.leader, pv.project_id, pv)">Editar</li>
+                                                <li class='delete-letter'>Eliminar</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                     <div class="top-project-preview" style="cursor: pointer" @click="opentaskboard(pv.leader, pv.project_id)">
                                         <div class="title-preview">
                                             <h4>{{pv.title}}</h4>
@@ -105,45 +192,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="action-edit-project-preview">
-                                            <!-- <a href="#">Editar</a> -->
-                                        </div>
                                     </div>
-                                    <!-- <div class="title-p"> -->
-                                        <!-- <a :href="'https://www.pmanagerd.bluemix.net/'+pv.owner+'/'+pv.project_id"></a> -->
-                                        <!-- <p style="cursor: pointer" @click="enterProject(pv.owner, pv.proyect_id)">
-                                            {{pv.title}}</p> -->
-                                            <!-- <p style="cursor: pointer" @click="opentaskboard(pv.leader, pv.project_id)">
-                                                    {{pv.title}}</p>
-                                    </div> -->
-                                    <!-- <div class="bottom-p-preview">
-                                        <div class="option-p-preview">
-                                            <div class="op-icon task-icon"></div>
-                                        </div>
-                                        <div class="option-p-preview">
-                                            <div class="op-icon members-icon"></div>
-                                            <div class="op-option"><a href="#">5 Miembros</a></div>
-                                        </div>
-                                        <div class="option-p-preview">
-                                            <div class="op-icon edit-icon"></div>
-                                            <div class="op-option"><a
-                                                    @click="selectProject(pv.leader, pv.project_id)">Editar</a></div>
-                                        </div>
-                                    </div> -->
-
-                                    <!-- <div class="membersofproject">
-                                        <div class="membersop">
-                                            <div class="memberop">
-
-                                            </div>
-                                            <div class="memberop">
-                                                
-                                            </div>
-                                            <div class="memberop">
-                                                
-                                            </div>
-                                        </div>
-                                    </div> -->
                                 </div>
                             </div>
                         </div>
@@ -181,8 +230,12 @@
             </div> -->
 
             <div class="section-one sections">
-                <div class="tboard">
+                    
+                        <div class="loading" v-if='loading'>
+                            <img src="css/img/loading.gif" alt="" srcset="">
+                        </div>
 
+                <div class="tboard">
                     <!-- Ventana modal para una nueva tarea -->
                     <div id="Modal" class="modal hidden">
                         <div class="backg-modal" @click="oculteEl('Modal', 'hidden')"></div>
@@ -304,7 +357,7 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <!-- Task board -->
                     <div id="todo-board">
                         <div class="head-taskboard">
@@ -312,7 +365,8 @@
                             <div class="title-head-tb" v-for="i in task.lists" :style='{backgroundColor: i.color}'>
                                 <div class="namelist">
                                 <div class="title-head-board title">
-                                    {{i.td}}
+                                    <!-- {{i.td}} -->
+                                    <input class='namelistinput' type="text" :value='i.td'>
                                 </div>
                                 <div class="icon-more-area">
 
