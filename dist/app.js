@@ -27,7 +27,8 @@ let vp = new Vue({
         },
         textforsearch: '',
         resultusers: [],
-        delete_project_accept: ''
+        delete_project_accept: '',
+        index_project_position: ''
     },
     computed: {
         clean() {
@@ -122,31 +123,23 @@ let vp = new Vue({
             window.location.href = "#pboard"
         },
         updateTitle: function () {
-            var t = document.getElementById('TITLE').value
-
-            if (t != this.datap.title && t != '') {
+            if (this.datap.title.trim() != '') {
                 data = qstring.stringify({
-                    title: t,
-                    description: this.datap.description,
-                    type: 'update'
+                    title: this.datap,
+                    type: 'updateTitle'
                 })
 
                 axios.put(url + '/api/project/' + this.datap.leader + '/' + this.datap.project_id, data)
                     .then((response) => {
                         console.log(response.data)
-                        this.datap.title = t
                     })
             }
         },
         updateDescription: function () {
-            d = document.getElementById('DESCRIPTION')
-            console.log("HOla")
             if (d != this.datap.description) {
-                console.log('ADIOS')
                 data = qstring.stringify({
-                    title: this.datap.title,
-                    description: d.innerText,
-                    type: 'update'
+                    description: this.datap.details,
+                    type: 'updateDetails'
                 })
 
                 axios.put(url + '/api/project/' + this.datap.leader + '/' + this.datap.project_id, data)
@@ -228,6 +221,7 @@ let vp = new Vue({
                 axios.put(url + '/api/project/'+ this.detailsproject.leader +'/' + this.detailsproject._id, data)
                     .then((response) => {
                         console.log(response.data)
+                        this.dataps.splice(this.index_project_position, 1)
                         this.modalDelete()
                     })
             } else {

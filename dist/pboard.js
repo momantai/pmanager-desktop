@@ -22,11 +22,11 @@ socket.on('message', (msg) => {
 	}
 })
 
-axios.get(urltask)
-	.then((response) => {
-		tb.task = response.data
-		tb.loading = false
-	})
+// axios.get(urltask)
+// 	.then((response) => {
+// 		tb.task = response.data
+// 		tb.loading = false
+// 	})
 
 let tb = new Vue({
 	el: '#main',
@@ -375,6 +375,17 @@ let tb = new Vue({
 			this.taskresources.todo[id].check = checkoption
 
 			console.log(this.taskresources.todo[id]._id)
-		},
+		}, 
+        updatenamelist: function(_id, td) {
+            urlnewlist = url + '/api/' + this.dataconf.user + '/' + this.dataconf.project + '/l'
+			
+			axios.post(urlnewlist, qstring.stringify({
+				'namelist': td,
+				'action': 'updatenamelist',
+				'_id': _id
+			}))
+			console.log(td)
+        }
+
 	}
 })

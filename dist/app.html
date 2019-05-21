@@ -185,14 +185,14 @@
                         <div class="showbox">
                             
                             <div class="contenedordetodo">
-                                <div class="proyect-preview" v-for="pv in dataps">
+                                <div class="proyect-preview" v-for="(pv, key) in dataps">
                                     <div class="action-edit-project-preview">
                                         <button class="action-edit"></button>
                                         <div class="menu-settings menu-action-edit">
                                             <ul>
                                                 <li @click="opentaskboard(pv.leader, pv.project_id)">Ver</li>
                                                 <li @click="selectProject(pv.leader, pv.project_id, pv)">Editar</li>
-                                                <li @click="modalDelete(), detailsproject._id = pv.project_id, detailsproject.leader = pv.leader" class='delete-letter'>Eliminar</li>
+                                                <li @click="modalDelete(), index_project_position = key, detailsproject._id = pv.project_id, detailsproject.leader = pv.leader" class='delete-letter'>Eliminar</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -385,7 +385,7 @@
                                 <div class="namelist">
                                 <div class="title-head-board title">
                                     <!-- {{i.td}} -->
-                                    <input class='namelistinput' type="text" :value='i.td'>
+                                    <input @blur="updatenamelist(i._id, i.td)" class='namelistinput' type="text" v-model="i.td" :title="i.td">
                                 </div>
                                 <div class="icon-more-area">
 

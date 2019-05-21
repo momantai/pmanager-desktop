@@ -759,7 +759,7 @@
 			outline: none;
 		}
 		.menu-action-edit {
-			top: 5px;
+			top: 0px;
 			right: 15px;
 		}
 		.action-edit:focus + .menu-action-edit {
