@@ -14,6 +14,11 @@
     #data_task {
         overflow: auto;
     }
+        #data_task a {
+            color: #0a84ff;
+            font-size: 0.9em;
+        }
+
         #data_task::-webkit-scrollbar {
             width: 10px;
             position: absolute;
@@ -35,11 +40,15 @@
             padding: 0 20px;
             overflow-y: auto;
         }
+        .section-datat a {
+            color: red;
+            font-size: 0.8em;
+        }
         ol {
             padding: 0 20px;
         }
         .section-datat, #to-do {
-                padding: 15px 15px;
+                padding: 15px 15px 0 15px;
             }
 
                 .info_task span {
@@ -47,14 +56,19 @@
                 }
 
                 #textTitle{
-                    width: 300px;
+                    width: 75%;
                     font-size: 16px;
                     border: transparent;
                     outline-style: none;
                     outline: 0;
                     box-shadow: none;
                     border-radius: 0;
-                    border-bottom: 1px solid rgba(34,36,38,.15);
+                    /* border-bottom: 1px solid rgba(34,36,38,.15); */
+                    background: none;
+                    box-shadow: 0 1px 0px 0px rgba(34,36,38,.15);
+                }
+                #textTitle:disabled {
+                    box-shadow: none;
                 }
 
                 .description_task, #to-do {
@@ -75,6 +89,7 @@
                             box-shadow: 0 0 2px 1px #cce2ff;
                         }
                     .text-description {
+                        min-height: 27px;
                         padding: 5px;
                     }
 
@@ -93,7 +108,7 @@
 
 .title-sections-dtask {
     color: black;
-    font-size: 1.2em;
+    font-size: 0.9em;
     margin: 5px 0;
     font-family: 'Raleway';
 }
@@ -124,4 +139,9 @@
 #recurso:hover {
     text-decoration: underline;
     cursor: pointer;
+}
+
+.resources ol {
+    background: whitesmoke;
+    padding: 10px;
 }

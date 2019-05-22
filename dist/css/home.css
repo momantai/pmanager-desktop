@@ -25,6 +25,9 @@
     		height: 420px;
 			margin: 0 auto;
 		}
+		.window-delete-project {
+			padding-top: 0;
+		}
 			.data-project p {
 				font-size: 0.8em;
 			}
@@ -277,15 +280,14 @@
 			.title-preview h4, .details-preview p {
 				font-family: 'Raleway';
 				font-size: 0.9em;
+				white-space: nowrap;
+				overflow: hidden;
+					  
+				text-overflow: ellipsis;
 			}
 				.details-preview p {
 					font-size: 0.85em;
 					color: #2f4f4f;
-
-					white-space: nowrap;
-					overflow: hidden;
-					  
-					text-overflow: ellipsis;
 				}
 
 	.box-topshowproyect {
@@ -420,6 +422,77 @@
 					.menu-settings:hover {
 						display: block;
 					}
+
+
+/* ###################### NOTIFICATIONS ######################### */
+
+.notifications {
+	height: 36px;
+	width: 36px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+}
+
+	.notification {
+		border: none;
+		background: none;
+		width: 25px;
+		height: 25px;
+		/* padding: 15px; */
+		/* border-radius: 50%; */
+		background-image: url('img/bell.svg');
+		background-size: 100%;
+		background-repeat: no-repeat;
+		background-position: center;
+		cursor: pointer;
+	}
+
+		.led-notification {
+			height: 9px;
+			width: 9px;
+			border-radius: 10px;
+			position: absolute;
+			top: 6px;
+			right: 6px;
+			background: #0049e7;
+		}
+
+	.box-notification {
+		height: 150px;
+		width: 195px;
+		position: absolute;
+		top: 38px;
+		right: 0;
+		background-color: white;
+		box-shadow: 0 0 5px 1px whitesmoke;
+		font-size: 0.8em;
+		overflow:auto;
+		overflow-x: overlay;
+		display: none;
+	}
+
+	.notification:focus + .box-notification {
+		display: block;
+	}
+
+		.box-notification ol {
+			padding: 0;
+		}
+		.box-notification li {
+			padding: 5px 10px;
+			background-color: white;
+		}
+			.box-notification li:nth-child(even) {
+				background-color: whitesmoke;
+			}
+			.box-notification li:hover {
+				background-color: #007bff;
+				cursor: pointer;
+			}
+
+/* ############################################################## */
 
 	/* Items */
 	.circle {

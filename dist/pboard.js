@@ -12,6 +12,7 @@ socket.on('message', (msg) => {
 			tb.deleteTask(msg)
 		} else if (msg.typeAction == 'title') {
 			tb.applyedit(msg)
+			console.log(msg)
 		} else if (msg.typeAction == 'newlist') {
 			tb.addnewlist(msg)
 		} else if (msg.typeAction == 'movetolist') {
@@ -46,10 +47,12 @@ let tb = new Vue({
 		statustem: "backlog",
 		tagsItem: [],
 		taskdetails: [],
-		taskresources: [],
+		taskresources: {
+			resources: []
+		},
 		tagOpt: '',
 		opt: {
-			'titleEdit': false,
+			'titleEdit': true,
 			'descriptionEdit': false
 		},
 		file: '',
@@ -180,7 +183,7 @@ let tb = new Vue({
 		},
 		newnametask: function () {
 			d = document.getElementById('textTitle')
-			this.opt.titleEdit = false
+			this.opt.titleEdit = true
 			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskdetails._id, qstring.stringify({
 				newTitle: this.taskdetails.name,
 				action: 'title',
@@ -273,6 +276,7 @@ let tb = new Vue({
 					.then((r) => {
 						this.taskdetails = r.data.things
 						this.taskresources = r.data.resource
+						console.log(this.taskresources)
 					})
 				//.then(response => (tb.taskInfo = response.data.task[0]))
 			}
@@ -385,7 +389,6 @@ let tb = new Vue({
 				'_id': _id
 			}))
 			console.log(td)
-        }
-
+		},
 	}
 })

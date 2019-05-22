@@ -14,6 +14,10 @@ let vp = new Vue({
     data: {
         dataps: [],
         datap: {},
+        datapcache: {
+            title: '',
+            details: ''
+        },
         idpm: 'Hola',
         loading: true,
         editprojectopt: {
@@ -28,7 +32,9 @@ let vp = new Vue({
         textforsearch: '',
         resultusers: [],
         delete_project_accept: '',
-        index_project_position: ''
+        index_project_position: '',
+        hasNotifications: true,
+        newNotifications: [{'notification': 'Haz sido invitado a un nuevo proyecto.'}]
     },
     computed: {
         clean() {
@@ -72,10 +78,12 @@ let vp = new Vue({
             mC.classList.toggle('hidden')
             document.getElementById('NUEVOTITULO').focus()
         },
-        modalDelete: function() {
+        modalDelete: function () {
             mdp = document.getElementById('modal-d-p')
-            mdp .classList.toggle('hidden')
+            mdp.classList.toggle('hidden')
             this.delete_project_accept = ''
+            document.getElementById('class-delete-project').focus()
+
         },
         wCreate: function () {
             nt = document.getElementById('NUEVOTITULO')
@@ -125,39 +133,37 @@ let vp = new Vue({
         updateTitle: function () {
             if (this.datap.title.trim() != '') {
                 data = qstring.stringify({
-                    title: this.datap,
+                    title: this.datap.title,
                     type: 'updateTitle'
                 })
 
                 axios.put(url + '/api/project/' + this.datap.leader + '/' + this.datap.project_id, data)
                     .then((response) => {
+                        this.editprojectopt.name = true
                         console.log(response.data)
                     })
             }
         },
         updateDescription: function () {
-            if (d != this.datap.description) {
-                data = qstring.stringify({
-                    description: this.datap.details,
-                    type: 'updateDetails'
-                })
+            data = qstring.stringify({
+                description: this.datap.details,
+                type: 'updateDetails'
+            })
 
-                axios.put(url + '/api/project/' + this.datap.leader + '/' + this.datap.project_id, data)
-                    .then((response) => {
-                        console.log(response.data)
-                        this.datap.description = d.innerText
-                            .innerText = ''
-                    })
-            }
+            axios.put(url + '/api/project/' + this.datap.leader + '/' + this.datap.project_id, data)
+                .then((response) => {
+                    console.log(response.data)
+                    this.editprojectopt.details = true
+                })
         },
         alert: function () {
             a = document.getElementById('alertt')
             a.classList.toggle('displayhidden');
         },
-        searchinTap: function() {
+        searchinTap: function () {
             text = this.textforsearch.trim()
             console.log(text)
-            if(text.length >= 3) {
+            if (text.length >= 3) {
                 axios.get(url + '/api/search-user/' + text)
                     .then((response) => {
                         this.resultusers = response.data
@@ -167,7 +173,7 @@ let vp = new Vue({
                 this.resultusers = []
             }
         },
-        inviteCollaborator: function(usertoInvite){
+        inviteCollaborator: function (usertoInvite) {
             console.log(usertoInvite.user)
 
             data = qstring.stringify({
@@ -186,39 +192,39 @@ let vp = new Vue({
                     }
                 })
         },
-        opentaskboard: function(user, project) {
+        opentaskboard: function (user, project) {
             tb.loading = true;
             wboard.style.display = "block";
-            
+
             axios.get(url + '/api/' + user + '/' + project + '/task')
                 .then(response => {
                     (tb.task = response.data)
-                    tb.dataconf = {'user': user, 'project': project}
+                    tb.dataconf = { 'user': user, 'project': project }
                     tb.tastap()
                     tb.loading = false
                 })
-                
-                console.log(tb.task)
 
-                pdataident = [user, project]
-                urltask = url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/task'
+            console.log(tb.task)
 
-                // wboard.style.display = "block";
+            pdataident = [user, project]
+            urltask = url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/task'
+
+            // wboard.style.display = "block";
         },
-        consolelog: function() {
+        consolelog: function () {
             console.log('Guardar')
         },
-        consolelogo: function() {
+        consolelogo: function () {
             console.log('Cancelar')
         },
-        deleteProject: function() {
+        deleteProject: function () {
             if (this.delete_project_accept == this.detailsproject.leader) {
                 data = qstring.stringify({
                     type: 'deleteProject',
                     sure: true
                 })
 
-                axios.put(url + '/api/project/'+ this.detailsproject.leader +'/' + this.detailsproject._id, data)
+                axios.put(url + '/api/project/' + this.detailsproject.leader + '/' + this.detailsproject._id, data)
                     .then((response) => {
                         console.log(response.data)
                         this.dataps.splice(this.index_project_position, 1)
@@ -228,7 +234,7 @@ let vp = new Vue({
                 alert('No se ha podido eliminar.')
             }
         },
-        testdos: function() {
+        testdos: function () {
             data = qstring.stringify({
                 list: "055cfc36-cda8-455a-ab3a-e912cdf2901b",
                 _id: "a7c28714-be36-4205-a52f-071e3972277e",
