@@ -4,12 +4,21 @@
 
 #checklist a{
     text-align: end;
+    color: white;
 }
+    #checklist a:hover{
+        text-align: end;
+        color: white;
+        text-decoration: underline;
+    }
 #checklist li {
     list-style: none;
     padding: 0.3em 0;
     display: flex;
 }
+    #checklist li:hover a {
+        color: #0a84ff;
+    }
 
 .textcheck {
     flex:1;
@@ -36,7 +45,7 @@
 
 #checklist input[type=checkbox]:checked + label::before {
     box-shadow: 0 0 0 3px white inset;
-    background: crimson;
+    background: #0a84ff;
     text-underline-position: below;
 }
 #checklist input[type=checkbox]:checked + label {

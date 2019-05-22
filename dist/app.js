@@ -1,4 +1,4 @@
-axios.get(url + '/api/projects/momantai')
+axios.get(url + '/api/projects/' + _keyid_session)
     .then((response) => {
         vp.dataps = response.data
         console.log(response.data)
@@ -69,6 +69,13 @@ let vp = new Vue({
             m = document.getElementById('modal-p')
             m.classList.toggle('hidden')
             this.datap = {}
+            this.editprojectopt = {
+                name: true,
+                details: true,
+                collaborator: true
+            }
+            this.textforsearch = ''
+            this.resultusers = []
         },
         modalCreate: function () {
             t = document.getElementById('NUEVOTITULO')
@@ -95,7 +102,7 @@ let vp = new Vue({
                     title: nt.value,
                     //_id: this.idpm
                 })
-                axios.put(url + '/api/projects/' + 'momantai', data)
+                axios.put(url + '/api/projects/' + _keyid_session, data)
                     .then((response) => {
                         r = response.data
                         if (/*r.ok*/'ok' != 'ok') {
@@ -192,10 +199,10 @@ let vp = new Vue({
                     }
                 })
         },
-        opentaskboard: function (user, project) {
+        opentaskboard: function (user, project, nameproject) {
             tb.loading = true;
             wboard.style.display = "block";
-
+            document.getElementById('nameprojectname').innerText = nameproject
             axios.get(url + '/api/' + user + '/' + project + '/task')
                 .then(response => {
                     (tb.task = response.data)

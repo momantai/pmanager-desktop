@@ -50,6 +50,17 @@
         .section-datat, #to-do {
                 padding: 15px 15px 0 15px;
             }
+                #to-do input {
+                    border: none;
+                    border-radius: 0;
+                    outline: none;
+                    background-color: whitesmoke;
+                    width: 220px;
+                }
+                    #to-do input:focus {
+                        background-color: #fff;
+                        box-shadow: 0 1px 0 0 #ccc;
+                    }
 
                 .info_task span {
                     border: none;
@@ -145,3 +156,51 @@
     background: whitesmoke;
     padding: 10px;
 }
+
+/* ############################Comments */
+
+.input-comment {
+    background-color: #f5f5f5;
+    border: 0;
+    border-radius: 50px;
+    width: 290px;
+    outline: none;
+    padding: 14px;
+    box-shadow: 0 0 0 1px #f5f5f5;
+}
+    input.input-comment:focus {
+        background-color: #fff;
+        /* box-shadow: none; */
+        box-shadow: 0 0 0 1px rgb(96, 176, 255);
+    }
+    input.button-comment:disabled {
+        background-color: #f5f5f5;
+        box-shadow: 0 0 0 1px #f5f5f5;
+        color: #ccc;
+    }
+
+    .button-comment {
+        background-color: rgb(51, 153, 255);
+        color: white;
+        border-radius: 50px;
+        border: 0;
+        padding: 5px;
+        box-shadow: 0 0 0 1px rgb(51, 153, 255);
+        margin-left: 5px;
+    }
+        .button-comment:hover {
+            background-color: rgb(96, 176, 255);
+            box-shadow: 0 0 0 1px rgb(96, 176, 255);
+            cursor: pointer;
+        }
+
+    .comment-item {
+        padding: 10px 15px;
+        width: 80%;
+        background-color: whitesmoke;
+        border-radius: 50px;
+        color: #8393a5;
+    }
+        .usercomment {
+            color: rgb(51, 153, 255);
+        }

@@ -76,7 +76,10 @@ let tb = new Vue({
 			index: 0,
 			futureIndex: 0
 		},
-		loading: true
+		loading: true,
+		commentary: '',
+		comments: [],
+		nameproject: ''
 	},
 	methods: { // indexPosition para saber el indice de un estado.
 
@@ -215,12 +218,17 @@ let tb = new Vue({
 			Area de listas o estados que contienen a las tareas.
 		*/
 		newlist: function () {
-			urlnewlist = url + '/api/' + this.dataconf.user + '/' + this.dataconf.project + '/l'
-			this.namenewlist
-			axios.post(urlnewlist, qstring.stringify({
-				'name': this.namenewlist,
-				'action': 'newlist'
-			}))
+			if(this.namenewlist.trim() != '') {
+				urlnewlist = url + '/api/' + this.dataconf.user + '/' + this.dataconf.project + '/l'
+
+				axios.post(urlnewlist, qstring.stringify({
+					'name': this.namenewlist.trim(),
+					'action': 'newlist'
+				}))
+
+				this.namenewlist = ''
+				
+			}
 		},
 		addnewlist: function (nl) {
 			this.task.lists.push({ '_id': nl._id, 'td': nl.td, 'color': nl.color })
@@ -276,6 +284,8 @@ let tb = new Vue({
 					.then((r) => {
 						this.taskdetails = r.data.things
 						this.taskresources = r.data.resource
+						this.comments = r.data.comments
+						console.log(r.data)
 						console.log(this.taskresources)
 					})
 				//.then(response => (tb.taskInfo = response.data.task[0]))
@@ -320,18 +330,18 @@ let tb = new Vue({
 			Area de 'To-do' dentro de una tarea.
 		*/
 		addTodo: function () {
-
-			axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskdetails._id, qstring.stringify({
-				action: 'todo',
-				actodo: 'create',
-				todo: this.todo
-			})).then(res => {
-				this.taskresources.todo.push(res.data)
-				console.log(res.data)
-			})
-
-			this.todo = ''
-
+			if(this.todo.trim() != '') {
+				axios.put(url + '/api/' + pdataident[0] + '/' + pdataident[1] + '/t/' + this.taskdetails._id, qstring.stringify({
+					action: 'todo',
+					actodo: 'create',
+					todo: this.todo
+				})).then(res => {
+					this.taskresources.todo.push(res.data)
+					console.log(res.data)
+				})
+	
+				this.todo = ''
+			}
 
 		},
 		deleteTodo: function (id) {
@@ -390,5 +400,21 @@ let tb = new Vue({
 			}))
 			console.log(td)
 		},
+		comment: function() {
+			if(this.commentary.trim() != '') {
+				data = qstring.stringify({
+					'user': _keyid_session,
+					'commentary': this.commentary.trim()
+				})
+				axios.post(url + '/api/' + this.dataconf.user + '/' + this.dataconf.project + '/t/' + this.taskdetails._id + '/c', data)
+					.then((r) => {
+						console.log(r.data)
+						this.comments.unshift(r.data)
+					})
+			} else {
+				console.log('Vacio')
+			}
+			
+		}
 	}
 })

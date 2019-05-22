@@ -314,6 +314,8 @@
 	.search {
 		height: 30px;
 		width: 250px;
+		display: flex;
+		align-items: center;
 	}
 	.search-input {
 		outline: none;

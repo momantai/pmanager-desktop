@@ -45,7 +45,7 @@
                         <div class="data-project window-delete-project">
                             <p>Escribe <strong>{{detailsproject.leader}}</strong> para continuar</p>
                             <div class="form">
-                                <input id='class-delete-project' @keyup.13='deleteProject' @keyup.esc='modalDelete' class="formcp" v-model='delete_project_accept' type="text" placeholder="Título de tu nuevo proyecto" />
+                                <input id='class-delete-project' @keyup.13='deleteProject' @keyup.esc='modalDelete' class="formcp" v-model='delete_project_accept' type="text" :placeholder="detailsproject.leader" />
                                 <div class="opt-form">
                                     <span class="btn-create" @click="deleteProject">Eliminar</span>
                                     <span class="btn-cancel" @click="modalDelete">Cancelar</span>
@@ -181,13 +181,13 @@
                                         <button class="action-edit"></button>
                                         <div class="menu-settings menu-action-edit">
                                             <ul>
-                                                <li @click="opentaskboard(pv.leader, pv.project_id)">Ver</li>
-                                                <li @click="selectProject(pv.leader, pv.project_id, pv)">Editar</li>
+                                                <li @click="opentaskboard(pv.leader, pv.project_id, pv.title)">Ver</li>
+                                                <li @click="selectProject(pv.leader, pv.project_id)">Editar</li>
                                                 <li @click="modalDelete(), index_project_position = key, detailsproject._id = pv.project_id, detailsproject.leader = pv.leader" class='delete-letter'>Eliminar</li>
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="top-project-preview" style="cursor: pointer" @click="opentaskboard(pv.leader, pv.project_id)">
+                                    <div class="top-project-preview" style="cursor: pointer" @click="opentaskboard(pv.leader, pv.project_id, pv.title)">
                                         <div class="title-preview">
                                             <h4>{{pv.title}}</h4>
                                         </div>
@@ -223,10 +223,15 @@
 
     <div id="contentboard" style="display: none">
         <div class="box-topshowproyect">
-            <div class="search">
+            <div class="">
                 <div class="back"></div>
                 <!-- <input class="search-input" type="text" name="search" placeholder="Buscar.." /> -->
             </div>
+
+            <div>
+                <p id="nameprojectname"></p>
+            </div>
+
             <div class="settings"></div>
         </div>
 
@@ -268,7 +273,7 @@
                     </div>
                     
                     <!-- Ventana modal para visualizar la información de una tarea. -->
-                    <div id="modal_task" class="modal ">
+                    <div id="modal_task" class="modal hidden">
                         <div class="backg-modal" @click="taskInformation('')"></div>
                         <div class="boxModal">
                             <div class="titleModal">
@@ -333,13 +338,13 @@
                                     </li>
                                     <li>
                                         <div id="to-do">
-                                            <span class="title-sections-dtask">To - do</span>
+                                            <span class="title-sections-dtask">Check list</span>
                                             <!-- Input para un nuevo elemento de to-do o para editarlo. -->
                                             <template v-if="!todobolean">
-                                                <input type="text" v-model="todo" @keyup.13="addTodo">
+                                                <input type="text" v-model="todo" @keyup.13="addTodo" placeholder="Nuevo to-do">
                                             </template>
                                             <template v-else>
-                                                <input type="text" v-model="todo" @keyup.13="editTodo(todotempid)">
+                                                <input type="text" id="edittodoinput" v-model="todo" @keyup.13="editTodo(todotempid)">
                                                 <a @click="todobolean = false, todo = ''">Cancelar</a>
                                             </template>
                                             
@@ -360,6 +365,23 @@
                                                 </li>
                                             </ul>
                                         </div>
+                                    </li>
+                                    <li class="section-datat">
+                                        <span class="title-sections-dtask">Comentarios</span><br>
+                                        <div style="display: flex; justify-content: center; margin-top: 5px;">
+                                            <input @keyup.esc='commentary = ""' v-model='commentary' @keyup.13='comment' type="text" class="input-comment" placeholder="Haz un nuevo comentario">
+                                            <input @click='comment' type="button" value="Comentar" class="button-comment" :disabled='commentary == ""'>
+                                        </div>
+                                        <ol style="margin-top: 10px;">
+                                            <li v-for='i in comments' style="margin: 5px;">
+                                                <div class="comment-item">
+                                                    <div class="usercomment">
+                                                        @{{i.usercomment}}
+                                                    </div>
+                                                    {{i.commentary}}
+                                                </div>
+                                            </li>
+                                        </ol>
                                     </li>
                                 </ol>
                             </div>
